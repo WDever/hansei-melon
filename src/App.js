@@ -1,25 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import * as api from './api';
+import MusicItem from './component/MusicItem';
 import './App.css';
 
 class App extends Component {
+  state = {
+    list: [],
+    title: '',
+    src: ''
+  }
+  id = -1;
+  componentDidMount = () => {
+    this.getTEST();
+  }
+  getTEST = async () => {
+    const response = await api.getTEST();
+    const { title: title, image_src } = response.data.song_list[0];
+    const length = response.data.song_list.length;
+
+    this.setState({
+      title: title,
+      src: image_src
+    });
+
+    console.log(response.data.song_list.length);
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <MusicItem
+          title={this.state.title}
+          src={this.state.src}
+        />
       </div>
     );
   }
