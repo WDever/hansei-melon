@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column-reverse;
   margin: 2rem;
+  cursor: pointer;
 
   &:hover {
     .title {

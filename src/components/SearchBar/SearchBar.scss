@@ -1,0 +1,15 @@
+.search-bar {
+  border: 1px solid #707070;
+  width: 94%;
+  border-radius: 1rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  .search {
+    width: 95%;
+    font-size: 2rem;
+    border: none;
+    outline: none;
+    color: #707070;
+  }
+}
