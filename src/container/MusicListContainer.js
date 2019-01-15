@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import * as musicListActions from '../store/modules/musicList';
-import MusicList from '../component/MusicList';
+import MusicList from '../components/MusicList';
 import * as api from '../lib/api';
 
 class MusicListContainder extends React.Component {

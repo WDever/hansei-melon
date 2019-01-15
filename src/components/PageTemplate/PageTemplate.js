@@ -1,20 +1,20 @@
 import React from 'react';
 import classNames from 'classnames/bind';
+import MusicListTemplate from '../MusicListTemplate';
 import styles from './PageTemplate.scss';
 
 const cx = classNames.bind(styles);
 
-const PageTemplate = ({ children }) => {
+const PageTemplate = ({ list, search, }) => {
   return (
     <div className={cx('page-tmeplate')}>
-      {/* <section className={cx('search-bar')}>
+      <section className={cx('search-bar')}>
         {search}
-      </section> */}
+      </section>
       <section className={cx('list-wrapper')}>
-        <div className={cx('title')}>
-          TOP 100
-        </div>
-        {children}
+        <MusicListTemplate
+          list={list}
+        />
       </section>
     </div>
   );

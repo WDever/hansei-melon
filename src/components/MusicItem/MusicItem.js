@@ -4,7 +4,7 @@ import styles from './MusicItem.scss';
 
 const cx = classNames.bind(styles);
 
-const MusicItem = ({ title, src, id }) => {
+const MusicItem = ({ title, src }) => {
   return (
     <div className={cx('item')} style={{backgroundImage: `url(${src})`}}>
       <div className={cx('title')}>
