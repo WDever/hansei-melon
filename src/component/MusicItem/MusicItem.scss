@@ -1,0 +1,38 @@
+.item {
+  width: 12.5rem;
+  height: 12.5rem;
+  display: flex;
+  flex-direction: column-reverse;
+  margin: 2rem;
+
+  &:hover {
+    .title {
+      display: none;
+    }
+    .reservation {
+      display: flex;
+    }
+  }
+
+  .title {
+    display: flex;
+    width: 12.5rem;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.74);
+    color: white;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .reservation {
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.74);
+    color: white;
+    font-weight: bold;
+  }
+}
