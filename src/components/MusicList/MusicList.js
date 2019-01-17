@@ -1,11 +1,12 @@
 import React from 'react'
 import classNames from 'classnames/bind';
+import { Circle } from 'better-react-spinkit';
 import MusicItem from '../MusicItem';
 import styles from './MusicList.scss';
 
 const cx = classNames.bind(styles);
 
-const MusicList = ({ list }) => {
+const MusicList = ({ list, loading }) => {
   const musicList = list.map(
     item => (
       <MusicItem
@@ -16,6 +17,14 @@ const MusicList = ({ list }) => {
       />
     )
   );
+
+  if(loading) {
+    return (
+      <div className={cx('list')}>
+        <Circle color="black" size={80} />
+      </div>
+    )
+  }
 
   return (
     <div className={cx('list')}>

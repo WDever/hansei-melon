@@ -1,7 +1,7 @@
 import React from 'react';
 import MusicListContainer from './container/MusicListContainer';
 import PageTemplate from './components/PageTemplate';
-import SearchBar from './components/SearchBar';
+import SearchBarContainer from './container/SearchBarContainer';
 import './App.css';
 
 class App extends React.Component {
@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <PageTemplate
         list={<MusicListContainer />}
-        search={<SearchBar />}
+        search={<SearchBarContainer />}
       />
     );
   }
