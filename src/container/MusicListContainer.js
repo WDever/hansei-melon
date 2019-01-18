@@ -8,19 +8,24 @@ import * as api from '../lib/api';
 
 class MusicListContainder extends React.Component {
   componentDidMount() {
-    this.getTEST();
+    this.getTOP();
+  };
+
+  handleClick = (title, album, artist) => {
+    this.getAPLLY(title, album, artist);
   }
 
-  getTEST = async () => {
+  getTOP = async () => {
     const { MusicListActions } = this.props;
 
     try {
-      const response = await api.getTEST();
+      const response = await api.getTOP();
 
       // eslint-disable-next-line array-callback-return
       response.data.map(item => {
-        const { title, image_src: imgSrc } = item;
-        MusicListActions.setData(title, imgSrc);
+        const { title, image_src: imgSrc, album, artist } = item;
+        const onClick = () => console.log('success');
+        MusicListActions.setData(title, imgSrc, album, artist, onClick);
       });
 
       console.log(response.data);
@@ -31,9 +36,21 @@ class MusicListContainder extends React.Component {
     }
   };
 
+  getAPLLY = async (title, album, artist) => {
+    try {
+      const response = await api.getAPLLY(title, album, artist);
+      const { message, code } = response.data;
+      alert(message, code);
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   render() {
     const { list, loading } = this.props;
-    return <MusicList list={list} loading={loading} />;
+    const { handleClick } = this;
+    return <MusicList list={list} loading={loading} onClick={handleClick} />;
   }
 }
 

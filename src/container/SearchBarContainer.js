@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SearchBar from '../components/SearchBar';
@@ -59,7 +60,6 @@ class SearchBarContainer extends React.Component {
     // console.log(remainHour);
     // console.log(remainMin);
     // console.log(remainSec);
-    console.log(total);
   }
 
   TimeHandler = () => { // 8시 20분 이전 시간 관리 로직
@@ -77,19 +77,13 @@ class SearchBarContainer extends React.Component {
 
     SearchActions.setTime(remainHour, remainMin, remainSec);
 
-    console.log(remainHour);
-    console.log(remainMin);
-    console.log(remainSec);
   }
   
 
   handleChange = e => {
     const { value } = e.target;
-    const { SearchActions, hour, min, sec } = this.props;
+    const { SearchActions } = this.props;
 
-    console.log(hour);
-    console.log(min);
-    console.log(sec);
     SearchActions.input(value);
   }
 
@@ -119,6 +113,21 @@ const mapStateToProps = ({ search }) => ({
 const mapDispatchToProps = dispatch => ({
   SearchActions: bindActionCreators(searchActions, dispatch)
 });
+
+SearchBarContainer.propTypes = {
+  reservation: PropTypes.bool,
+  // hour: PropTypes.number,
+  // min: PropTypes.number,
+  // sec: PropTypes.number,
+  input: PropTypes.string,
+  placeholder: PropTypes.string
+};
+
+SearchBarContainer.defaultProps = {
+  reservation: true,
+  input: '',
+  placeholder: ''
+};
 
 export default connect(
   mapStateToProps,

@@ -12,9 +12,9 @@ export const start = createAction(START);
 const initialState = {
   input: '',
   placeholder: '',
-  hour: '',
-  min: '',
-  sec: '',
+  hour: null,
+  min: null,
+  sec: null,
   reservation: true
 };
 
