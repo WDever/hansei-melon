@@ -12,7 +12,7 @@ class MusicListContainder extends React.Component {
   };
 
   handleClick = (title, album, artist) => {
-    this.getAPLLY(title, album, artist);
+    this.postAPLLY(title, album, artist);
   }
 
   getTOP = async () => {
@@ -36,9 +36,9 @@ class MusicListContainder extends React.Component {
     }
   };
 
-  getAPLLY = async (title, album, artist) => {
+  postAPLLY = async (title, album, artist) => {
     try {
-      const response = await api.getAPLLY(title, album, artist);
+      const response = await api.postAPLLY(title, album, artist);
       const { message, code } = response.data;
       alert(message, code);
       console.log(response);

@@ -14,7 +14,7 @@ const MusicList = ({ list, loading, onClick }) => {
       id={item.id}
       title={item.title}
       src={item.imgSrc}
-      onClick={() => onClick(item.title, item.artist, item.album)}
+      onClick={() => onClick(item.title, item.album, item.artist)}
     />
   ));
 

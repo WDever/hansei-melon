@@ -8,26 +8,43 @@ import * as api from '../lib/api';
 import * as searchActions from '../store/modules/search';
 
 class SearchBarContainer extends React.Component {
-  i = 0;
-
   componentDidMount = () => {
+    this.getCHECK();
+
     const { SearchActions } = this.props;
 
     const hour = moment().format('H');
     const min = moment().format('m');
 
-    if(min >= 20) { // 신청시간 안에 들어왔을때. true를 false로
-      if(hour >= 8) {
+    if(min >= '20' && min <= '59') { // 신청시간 안에 들어왔을때. true를 false로
+      if(hour >= '8' && hour <=  '11') {
         SearchActions.start();
       }
     }
-    
+
     this.handleStarter(hour);
+  }
+
+  getCHECK = async () => {
+    const { reservation,SearchActions } = this.props;
+    try {
+      const response = await api.getCHECK();
+      const { code } = response.data;
+
+      if(code === 423 && !reservation) {
+        SearchActions.start();
+        console.log(reservation);
+      }
+
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   handleStarter = (hour) => {
     // eslint-disable-next-line no-unused-vars
-    this.starter = hour >= 12 ? setInterval(() => this.overTimeHandler(), 1000) : setInterval(() => this.TimeHandler(), 1000);
+    this.starter = 8 >= 12 ? setInterval(() => this.overTimeHandler(), 1000) : setInterval(() => this.TimeHandler(), 1000);
   }
 
   overTimeHandler = () => { // 12시 이후 시간 관리 로직
@@ -43,11 +60,7 @@ class SearchBarContainer extends React.Component {
     const remainMin = Math.floor((total - remainHour * 3600) / 60);
     const remainSec = total - remainHour * 3600 - remainMin * 60;
 
-    if(!reservation) {
-      SearchActions.start();
-    }
-
-    this.i += 1;
+    if(!reservation) SearchActions.start();
 
     SearchActions.setTime(remainHour, remainMin, remainSec);
 
@@ -63,9 +76,9 @@ class SearchBarContainer extends React.Component {
   }
 
   TimeHandler = () => { // 8시 20분 이전 시간 관리 로직
-    const { SearchActions } = this.props;
+    const { SearchActions, reservation } = this.props;
 
-    const hour = moment().format('H');
+    const hour = '8';
     const min = moment().format('m');
     const sec = moment().format('s');
 
@@ -75,8 +88,21 @@ class SearchBarContainer extends React.Component {
     const remainMin = Math.floor((total - remainHour * 3600) / 60);
     const remainSec = total - remainHour * 3600 - remainMin * 60;
 
-    SearchActions.setTime(remainHour, remainMin, remainSec);
+    if(min >= '20') { // TimeHandler가 실행중일때 8시 20분이 넘으면 reservation 반전
+      if(hour === '8' && reservation) {
+        SearchActions.start();
+        console.log('th active')
+      }
+    }
 
+    if(hour === '12' && !reservation) { // reservation이 false이고 12시가 되면 reservation 반전
+      console.log('th2');
+      SearchActions.start();
+      clearInterval(this.starter);
+      this.handleStarter();
+    }
+
+    SearchActions.setTime(remainHour, remainMin, remainSec);
   }
   
 
