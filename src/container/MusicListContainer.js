@@ -7,12 +7,20 @@ import MusicList from '../components/MusicList';
 import * as api from '../lib/api';
 
 class MusicListContainder extends React.Component {
-  componentDidMount() {
-    this.getTOP();
+  async componentDidMount () {
+    await this.getCHECK();
+
+    const { code } = this.props;
+
+    return code === 423 ? this.getPLAYLIST(true) : this.getTOP();
   };
 
-  handleClick = (title, album, artist) => {
-    this.postAPLLY(title, album, artist);
+  handleClick = async (title, album, artist) => {
+    await this.postAPLLY(title, album, artist);
+    await this.getCHECK();
+    const { code } = this.props;
+    console.log(code)
+    return code === 423 ? this.getPLAYLIST(false) : null;
   }
 
   getTOP = async () => {
@@ -24,8 +32,7 @@ class MusicListContainder extends React.Component {
       // eslint-disable-next-line array-callback-return
       response.data.map(item => {
         const { title, image_src: imgSrc, album, artist } = item;
-        const onClick = () => console.log('success');
-        MusicListActions.setData(title, imgSrc, album, artist, onClick);
+        MusicListActions.setData(title, imgSrc, album, artist);
       });
 
       console.log(response.data);
@@ -41,22 +48,58 @@ class MusicListContainder extends React.Component {
       const response = await api.postAPLLY(title, album, artist);
       const { message, code } = response.data;
       alert(message, code);
-      console.log(response);
+      // console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+ getCHECK = async () => {
+    const { MusicListActions } = this.props;
+    try {
+      const response = await api.getCHECK();
+      const { code } = response.data;
+
+      MusicListActions.check(code);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getPLAYLIST = async (bool) => {
+    const { MusicListActions, check } = this.props;
+
+    try {
+      const response = await api.getPLAYLIST();
+
+      const titleCheck = check ? MusicListActions.checkCode() : null;
+
+      const afterCheck = bool ? null : MusicListActions.reset();
+
+      // eslint-disable-next-line array-callback-return
+      response.data.results.map(item => {
+        const { title, image_src: imgSrc, album, artist } = item;
+        MusicListActions.setData(title, imgSrc, album, artist);
+      });
+      
+      return bool ? MusicListActions.loading() : null;
     } catch (e) {
       console.log(e);
     }
   }
 
   render() {
-    const { list, loading } = this.props;
+    const { list, loading, check } = this.props;
     const { handleClick } = this;
-    return <MusicList list={list} loading={loading} onClick={handleClick} />;
+    return <MusicList list={list} loading={loading} onClick={handleClick} check={check} />;
   }
 }
 
 const mapStateToProps = ({ musicList }) => ({
   list: musicList.list,
   loading: musicList.loading,
+  code: musicList.code,
+  check: musicList.check
 });
 
 const mapDispatchToProps = dispatch => ({

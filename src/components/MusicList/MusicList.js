@@ -7,7 +7,7 @@ import styles from './MusicList.scss';
 
 const cx = classNames.bind(styles);
 
-const MusicList = ({ list, loading, onClick }) => {
+const MusicList = ({ list, loading, onClick, check }) => {
   const musicList = list.map(item => (
     <MusicItem
       key={item.id}
@@ -28,6 +28,9 @@ const MusicList = ({ list, loading, onClick }) => {
 
   return (
     <div className={cx('list')}>
+      <div className={cx('top-title')}>
+        {check ? 'TOP 100' : `Today's Playlist`}
+      </div>
       {musicList}
     </div>
   );

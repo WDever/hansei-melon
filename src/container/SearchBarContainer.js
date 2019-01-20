@@ -11,13 +11,13 @@ class SearchBarContainer extends React.Component {
   componentDidMount = () => {
     this.getCHECK();
 
-    const { SearchActions } = this.props;
+    const { SearchActions, reservation } = this.props;
 
     const hour = moment().format('H');
     const min = moment().format('m');
 
     if(min >= '20' && min <= '59') { // 신청시간 안에 들어왔을때. true를 false로
-      if(hour >= '8' && hour <=  '11') {
+      if(hour >= '8' && hour <=  '11' && reservation) {
         SearchActions.start();
       }
     }
@@ -26,7 +26,7 @@ class SearchBarContainer extends React.Component {
   }
 
   getCHECK = async () => {
-    const { reservation,SearchActions } = this.props;
+    const { reservation, SearchActions } = this.props;
     try {
       const response = await api.getCHECK();
       const { code } = response.data;

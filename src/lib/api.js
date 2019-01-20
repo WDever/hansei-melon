@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 const top = `https://www.hansei-melon.com/api/top-100/`;
-// const top = `https://www.hansei-melon.com/api/music-list/`;
 const check = `https://www.hansei-melon.com/api/apply-check/`;
+const playlist = `https://www.hansei-melon.com/api/music-list/`;
 
 export const getTOP = () => axios.get(top);
 
@@ -18,3 +18,5 @@ export const postAPLLY = (title, album, artist) => {
 }
 
 export const getCHECK = () => axios.get(check);
+
+export const getPLAYLIST = () => axios.get(playlist);

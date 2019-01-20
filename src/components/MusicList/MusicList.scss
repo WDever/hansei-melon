@@ -3,4 +3,11 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+
+  .top-title {
+    width: 94%;
+    font-weight: bold;
+    font-size: 5rem;
+    color: #707070;
+  }
 }
