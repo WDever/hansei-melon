@@ -10,6 +10,8 @@ const AL_SEARCH = 'search/AL_SEARCH';
 const AR_SEARCH = 'search/AR_SEARCH';
 const CAT = 'search/CAT';
 const SEARCH_LOADING = 'search/SEARCH_LOADING';
+const RESET = 'search/RESET';
+const FOCUS = 'searxh/FOCUS';
 
 let id = 0;
 
@@ -25,6 +27,8 @@ export const Alsearch = createAction(AL_SEARCH, (title, imgSrc, album, artist) =
 export const Arsearch = createAction(AR_SEARCH, (title, imgSrc, album, artist) => ({title, imgSrc, album, artist, id: id++}));
 export const cat = createAction(CAT, index => index);
 export const searchLoading = createAction(SEARCH_LOADING);
+export const reset = createAction(RESET);
+export const focus = createAction(FOCUS, bool => bool);
 
 const initialState = {
   input: '',
@@ -39,6 +43,7 @@ const initialState = {
   Allist: [],
   Arlist: [],
   loading: false,
+  focus: false,
 };
 
 export default handleActions(
@@ -100,6 +105,16 @@ export default handleActions(
     [SEARCH_LOADING]: (state, action) =>
       produce(state, draft => {
         draft.loading = !state.loading
+      }),
+    [RESET]: (state, action) =>
+      produce(state, draft => {
+        draft.Tlist = [];
+        draft.Allist = [];
+        draft.Arlist = [];
+      }),
+    [FOCUS]: (state, action) =>
+      produce(state, draft => {
+        draft.focus = action.payload
       }),
   },
   initialState

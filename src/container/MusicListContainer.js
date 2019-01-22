@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as musicListActions from '../store/modules/musicList';
+import * as searchActions from '../store/modules/search';
 import MusicList from '../components/MusicList';
 import * as api from '../lib/api';
 
@@ -75,6 +76,8 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.getPLAYLIST();
 
+      console.log(response);
+
       const titleCheck = check ? MusicListActions.checkCode() : null;
 
       const afterCheck = bool ? null : MusicListActions.reset();
@@ -92,21 +95,23 @@ class MusicListContainder extends React.Component {
   }
 
   render() {
-    const { list, loading, check } = this.props;
+    const { list, loading, check, flag } = this.props;
     const { handleClick } = this;
-    return <MusicList list={list} loading={loading} onClick={handleClick} check={check} />;
+    return <MusicList list={list} loading={loading} onClick={handleClick} check={check} flag={flag} />;
   }
 }
 
-const mapStateToProps = ({ musicList }) => ({
+const mapStateToProps = ({ musicList, search }) => ({
   list: musicList.list,
   loading: musicList.loading,
   code: musicList.code,
-  check: musicList.check
+  check: musicList.check,
+  flag: search.flag
 });
 
 const mapDispatchToProps = dispatch => ({
   MusicListActions: bindActionCreators(musicListActions, dispatch),
+  SearchActions: bindActionCreators(searchActions, dispatch),
 });
 
 MusicListContainder.propTypes = {

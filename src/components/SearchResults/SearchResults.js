@@ -4,12 +4,13 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { Circle } from 'better-react-spinkit';
-import styles from './SearchResults.scss';
 import SearchItem from '../SearchItem';
+import styles from './SearchResults.scss';
+// import MusicItem from '../MusicItem';
 
 const cx = classNames.bind(styles);
 
-const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClick, loading }) => {
+const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, focus }) => {
   const titleList = Tlist.map(item => (
     <SearchItem
       key={item.id}
@@ -43,10 +44,16 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClic
     />
   ));
 
+  const reset = async () => {
+    titleList.length = 0;
+    albumList.length = 0;
+    artistList.length = 0;
+  }
+
   if (loading) {
-    console.log('loading');
+    reset();
     return (
-      <div className={cx('results-wrapper')}>
+      <div className={cx('results-wrapper', { visibility: focus })}>
         <Circle color="black" size={60} />{' '}
       </div>
     );
@@ -55,18 +62,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClic
   if (flag && !loading) {
     if (titleList.length !== 0 && cat === 1) {
       return (
-        <div className={cx('results-wrapper')}>
-          <div className={cx('change-wrapper')}>
-            <div className={cx('change')} onClick={() => changeResults(1)}>
-              제목{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(2)}>
-              가수{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(3)}>
-              앨범{' '}
-            </div>{' '}
-          </div>{' '}
+        <div className={cx('results-wrapper', { visibility: focus })}>
           {titleList}{' '}
         </div>
       );
@@ -74,15 +70,6 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClic
     if (titleList.length === 0) {
       return (
         <div className={cx('change-wrapper')}>
-          <div className={cx('change')} onClick={() => changeResults(1)}>
-            제목{' '}
-          </div>{' '}
-          <div className={cx('change')} onClick={() => changeResults(2)}>
-            가수{' '}
-          </div>{' '}
-          <div className={cx('change')} onClick={() => changeResults(3)}>
-            앨범{' '}
-          </div>{' '}
           <div className={cx('results-wrapper')}> 검색 결과가 없습니다. </div>{' '}
         </div>
       );
@@ -93,17 +80,6 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClic
     if (artistList.length !== 0 && cat === 2) {
       return (
         <div className={cx('results-wrapper')}>
-          <div className={cx('change-wrapper')}>
-            <div className={cx('change')} onClick={() => changeResults(1)}>
-              제목{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(2)}>
-              가수{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(3)}>
-              앨범{' '}
-            </div>{' '}
-          </div>{' '}
           {artistList}{' '}
         </div>
       );
@@ -111,15 +87,6 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClic
     if (artistList.length === 0) {
       return (
         <div className={cx('change-wrapper')}>
-          <div className={cx('change')} onClick={() => changeResults(1)}>
-            제목{' '}
-          </div>{' '}
-          <div className={cx('change')} onClick={() => changeResults(2)}>
-            가수{' '}
-          </div>{' '}
-          <div className={cx('change')} onClick={() => changeResults(3)}>
-            앨범{' '}
-          </div>{' '}
           <div className={cx('results-wrapper')}> 검색 결과가 없습니다. </div>{' '}
         </div>
       );
@@ -130,17 +97,6 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClic
     if (albumList.length !== 0 && cat === 3) {
       return (
         <div className={cx('results-wrapper')}>
-          <div className={cx('change-wrapper')}>
-            <div className={cx('change')} onClick={() => changeResults(1)}>
-              제목{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(2)}>
-              가수{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(3)}>
-              앨범{' '}
-            </div>{' '}
-          </div>{' '}
           {albumList}{' '}
         </div>
       );
@@ -148,17 +104,6 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, changeResults, onClic
     if (albumList.length === 0) {
       return (
         <div className={cx('results-wrapper')}>
-          <div className={cx('change-wrapper')}>
-            <div className={cx('change')} onClick={() => changeResults(1)}>
-              제목{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(2)}>
-              가수{' '}
-            </div>{' '}
-            <div className={cx('change')} onClick={() => changeResults(3)}>
-              앨범{' '}
-            </div>{' '}
-          </div>
           검색 결과가 없습니다.{' '}
         </div>
       );
@@ -174,6 +119,7 @@ SearchResults.propTypes = {
   Tlist: PropTypes.array,
   Allist: PropTypes.array,
   Arlist: PropTypes.array,
+  focus: PropTypes.bool,
 };
 
 SearchResults.defaultProps = {
@@ -182,6 +128,7 @@ SearchResults.defaultProps = {
   Tlist: [],
   Allist: [],
   Arlist: [],
+  focus: false,
 };
 
 export default SearchResults;

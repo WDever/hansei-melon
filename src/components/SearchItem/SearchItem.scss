@@ -1,22 +1,25 @@
 .search-item {
+  z-index: 1;
   width: 99.5%;
   height: 5rem;
   display: flex;
   justify-content: space-between;
-  border: 1px solid #707070;
-  border-radius: 1rem;
+  border: 1px solid #966dcf;
+  border-left: none;
+  border-right: none;
+  border-top: none;
   .search-data {
     display: flex;
     margin-left: 1rem;
     align-items: center;
     width: 80%;
     .search-img {
-      height: 4rem;
-      width: 4rem;
+      height: 3rem;
+      width: 3rem;
     }
     .search-info {
       display: flex;
-      height: 4rem;
+      height: 3.5rem;
       flex-direction: column;
       justify-content: space-around;
       margin: 0.5rem;
@@ -28,5 +31,6 @@
     align-items: center;
     justify-content: center;
     margin-right: 1rem;
+    color: #df9fcf;
   }
 }

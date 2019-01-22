@@ -6,18 +6,32 @@ import { ReactComponent as Icon } from './searchIcon.svg';
 
 const cx = classNames.bind(styles);
 
-const SearchBar = ({ onChange, onClick, value, reservation, placeholder, onKeyPress }) => (
-  <div className={cx('search-bar')}>
-    <input
-      className={cx('search')}
-      onChange={onChange}
-      value={value}
-      placeholder={reservation ? placeholder : ''}
-      onKeyPress={onKeyPress}
-    />
-    <Icon className={cx('icon')} onClick={onClick} />
+const SearchBar = ({
+  onChange,
+  onClick,
+  value,
+  reservation,
+  placeholder,
+  onKeyPress,
+  changer,
+  onFocus,
+}) => (
+  <div className={cx('search-template')}>
+    {changer}
+    <div className={cx('search-bar')}>
+      <input
+        className={cx('search')}
+        onChange={onChange}
+        value={value}
+        placeholder={reservation ? placeholder : ''}
+        onKeyPress={onKeyPress}
+        onFocus={() => onFocus(true)}
+        onBlur={() => onFocus(false)}
+      />
+      <Icon className={cx('icon')} onClick={onClick} />
+    </div>
   </div>
-  );
+);
 
 SearchBar.propTypes = {
   onChange: PropTypes.func,

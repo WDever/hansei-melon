@@ -7,12 +7,12 @@ import styles from './MusicList.scss';
 
 const cx = classNames.bind(styles);
 
-const MusicList = ({ list, loading, onClick, check }) => {
+const MusicList = ({ list, loading, onClick, check, flag }) => {
   const musicList = list.map(item => (
     <MusicItem
       key={item.id}
       id={item.id}
-      title={item.title}
+      title={item.title.concat(' - ', item.artist)}
       src={item.imgSrc}
       onClick={() => onClick(item.title, item.album, item.artist)}
     />
@@ -25,6 +25,8 @@ const MusicList = ({ list, loading, onClick, check }) => {
       </div>
     );
   }
+
+  // flag===true, 빈 div태그
 
   return (
     <div className={cx('list')}>
