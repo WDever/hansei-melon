@@ -9,6 +9,7 @@ const T_SEARCH = 'search/T_SEARCH';
 const AL_SEARCH = 'search/AL_SEARCH';
 const AR_SEARCH = 'search/AR_SEARCH';
 const CAT = 'search/CAT';
+const SEARCH_LOADING = 'search/SEARCH_LOADING';
 
 let id = 0;
 
@@ -23,6 +24,7 @@ export const Alsearch = createAction(AL_SEARCH, (title, imgSrc, album, artist) =
 // eslint-disable-next-line no-plusplus
 export const Arsearch = createAction(AR_SEARCH, (title, imgSrc, album, artist) => ({title, imgSrc, album, artist, id: id++}));
 export const cat = createAction(CAT, index => index);
+export const searchLoading = createAction(SEARCH_LOADING);
 
 const initialState = {
   input: '',
@@ -94,6 +96,10 @@ export default handleActions(
     [CAT]: (state, action) =>
       produce(state, draft => {
         draft.cat = action.payload
+      }),
+    [SEARCH_LOADING]: (state, action) =>
+      produce(state, draft => {
+        draft.loading = !state.loading
       }),
   },
   initialState

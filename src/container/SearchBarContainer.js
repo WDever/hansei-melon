@@ -59,6 +59,7 @@ class SearchBarContainer extends React.Component {
         const { title, image_src: imgSrc, album, artist } = item;
         SearchActions.Alsearch(title, imgSrc, album, artist);
       });
+      console.log('album');
     } catch (e) {
       console.log(e);
     }
@@ -73,6 +74,7 @@ class SearchBarContainer extends React.Component {
         const { title, image_src: imgSrc, album, artist } = item;
         SearchActions.Tsearch(title, imgSrc, album, artist);
       });
+      console.log('title');
     } catch (e) {
       console.log(e);
     }
@@ -87,6 +89,7 @@ class SearchBarContainer extends React.Component {
         const { title, image_src: imgSrc, album, artist } = item;
         SearchActions.Arsearch(title, imgSrc, album, artist);
       });
+      console.log('artist');
     } catch (e) {
       console.log(e);
     }
@@ -148,10 +151,17 @@ class SearchBarContainer extends React.Component {
     SearchActions.input(value);
   }
 
-  handleSearch = () => {
-    const { input } = this.props;
+  handleSearch = async () => {
+    const { SearchActions, input } = this.props;
 
-    this.getTSearch(input);
+    await this.handleLoading();
+
+    await this.getTSearch(input);
+
+    await this.handleLoading();
+
+    this.getALSearch(input);
+    this.getARSearch(input);
   }
 
   enterSearch = e => {
@@ -160,14 +170,25 @@ class SearchBarContainer extends React.Component {
     }
   }
 
-  changeResults = index => {
+  changeResults = async index => {
     const { SearchActions } = this.props;
 
-    SearchActions.cat(index);
+    // console.log(Tlist);
+    // console.log(Allist);
+    // console.log(Arlist);
+    await this.handleLoading();
+    await SearchActions.cat(index);
+    await this.handleLoading();
+  }
+
+  handleLoading = () => {
+    const { SearchActions } = this.props;
+
+    SearchActions.searchLoading();
   }
 
   render() {
-    const { input, placeholder, reservation, Tlist, Allist, Arlist, flag, cat } = this.props;
+    const { input, placeholder, reservation, Tlist, Allist, Arlist, flag, cat, loading } = this.props;
     const { handleChange, handleSearch, postApply, changeResults, enterSearch } = this;
     return (
       <>
@@ -187,6 +208,7 @@ class SearchBarContainer extends React.Component {
           flag={flag}
           onClick={postApply}
           changeResults={changeResults}
+          loading={loading}
         />
       </>
     );
@@ -205,8 +227,9 @@ const mapStateToProps = ({ search, musicList }) => ({
   flag: search.flag,
   cat: search.cat,
   Tlist: search.Tlist,
-  Allist: search.al_list,
-  Arlist: search.ar_list
+  Allist: search.Allist,
+  Arlist: search.Arlist,
+  loading: search.loading
 });
 
 const mapDispatchToProps = dispatch => ({

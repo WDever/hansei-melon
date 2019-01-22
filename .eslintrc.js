@@ -1,6 +1,6 @@
 module.exports = {
   "extends": [
-      "react-app",
+      // "react-app",
       "airbnb",
       "prettier"
     ],
