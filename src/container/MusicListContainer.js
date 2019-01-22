@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,9 +11,11 @@ class MusicListContainder extends React.Component {
   async componentDidMount () {
     await this.getCHECK();
 
+    const hour = moment().format('H');
+
     const { code } = this.props;
 
-    return code === 423 ? this.getPLAYLIST(true) : this.getTOP();
+    return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
   };
 
   handleClick = async (title, album, artist) => {

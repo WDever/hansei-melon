@@ -1,0 +1,16 @@
+.results-wrapper {
+  width: 94%;
+  .change-wrapper {
+    display: flex;
+    .change {
+      cursor: pointer;
+      width: 33%;
+      height: 3.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #707070;
+      border-radius: 1rem;
+    }
+  }
+}

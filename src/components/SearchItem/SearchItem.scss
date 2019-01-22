@@ -1,0 +1,32 @@
+.search-item {
+  width: 99.5%;
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #707070;
+  border-radius: 1rem;
+  .search-data {
+    display: flex;
+    margin-left: 1rem;
+    align-items: center;
+    width: 80%;
+    .search-img {
+      height: 4rem;
+      width: 4rem;
+    }
+    .search-info {
+      display: flex;
+      height: 4rem;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: 0.5rem;
+    }
+  }
+  .search-reservation {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+  }
+}

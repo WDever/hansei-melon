@@ -1,20 +1,31 @@
+/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SearchBar from '../components/SearchBar';
+import SearchResults from '../components/SearchResults';
 import * as api from '../lib/api';
 import * as searchActions from '../store/modules/search';
+import * as musicListActions from '../store/modules/musicList';
 
 class SearchBarContainer extends React.Component {
-  componentDidMount = () => {
-    this.getCHECK();
+  componentDidMount = async () => {
+    // this.getTSearch();
+    // this.getARSearch();
+    // this.getALSearch();
+    await this.getCHECK();
 
-    const { SearchActions, reservation } = this.props;
+    const { SearchActions, reservation, code } = this.props;
 
     const hour = moment().format('H');
     const min = moment().format('m');
+
+    if(code === 423 && !reservation) { // 예약 시간동안만 false
+      SearchActions.start();
+      console.log(reservation);
+    }
 
     if(min >= '20' && min <= '59') { // 신청시간 안에 들어왔을때. true를 false로
       if(hour >= '8' && hour <=  '11' && reservation) {
@@ -26,15 +37,12 @@ class SearchBarContainer extends React.Component {
   }
 
   getCHECK = async () => {
-    const { reservation, SearchActions } = this.props;
+    const { MusicListActions } = this.props;
     try {
       const response = await api.getCHECK();
       const { code } = response.data;
 
-      if(code === 423 && !reservation) {
-        SearchActions.start();
-        console.log(reservation);
-      }
+      MusicListActions.check(code);
 
       console.log(response);
     } catch (e) {
@@ -42,43 +50,67 @@ class SearchBarContainer extends React.Component {
     }
   }
 
-  handleStarter = (hour) => {
-    // eslint-disable-next-line no-unused-vars
-    this.starter = 8 >= 12 ? setInterval(() => this.overTimeHandler(), 1000) : setInterval(() => this.TimeHandler(), 1000);
+  getALSearch = async (input) => {
+    const { SearchActions } = this.props;
+    try {
+      const response = await api.getALSearch(input);
+
+      await response.data.song_list_album.map(item => {
+        const { title, image_src: imgSrc, album, artist } = item;
+        SearchActions.Alsearch(title, imgSrc, album, artist);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  getTSearch = async (input) => {
+    const { SearchActions } = this.props;
+    try {
+      const response = await api.getTSearch(input);
+
+      response.data.song_list_title.map(item => {
+        const { title, image_src: imgSrc, album, artist } = item;
+        SearchActions.Tsearch(title, imgSrc, album, artist);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  overTimeHandler = () => { // 12시 이후 시간 관리 로직
-    const { SearchActions, reservation } = this.props;
+  getARSearch = async (input) => {
+    const { SearchActions } = this.props;
+    try {
+      const response = await api.getARSearch(input);
 
-    const hour = moment().format('H');
-    const min = moment().format('m');
-    const sec = moment().format('s');
-
-    const total = 116400 - (Number(hour * 3600) + Number(min * 60) + Number(sec));
-
-    const remainHour = Math.floor(total / 3600);
-    const remainMin = Math.floor((total - remainHour * 3600) / 60);
-    const remainSec = total - remainHour * 3600 - remainMin * 60;
-
-    if(!reservation) SearchActions.start();
-
-    SearchActions.setTime(remainHour, remainMin, remainSec);
-
-    if(hour === '0') {
-      clearInterval(this.starter);
-      this.handleStarter();
+      response.data.song_list_artist.map(item => {
+        const { title, image_src: imgSrc, album, artist } = item;
+        SearchActions.Arsearch(title, imgSrc, album, artist);
+      });
+    } catch (e) {
+      console.log(e);
     }
+  }
 
-    // console.log(reservation);
-    // console.log(remainHour);
-    // console.log(remainMin);
-    // console.log(remainSec);
+  postApply = async (title, album, artist) => {
+    try {
+      const response = await api.postAPLLY(title, album, artist);
+      const { message, code } = response.data;
+      alert(message, code);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  handleStarter = (hour) => {
+    const { SearchActions } = this.props;
+    this.starter = hour >= 12 ? SearchActions.end() : setInterval(() => this.TimeHandler(), 1000);
   }
 
   TimeHandler = () => { // 8시 20분 이전 시간 관리 로직
-    const { SearchActions, reservation } = this.props;
+    const { SearchActions, reservation, code } = this.props;
 
-    const hour = '8';
+    const hour = moment().format('H');
     const min = moment().format('m');
     const sec = moment().format('s');
 
@@ -91,20 +123,23 @@ class SearchBarContainer extends React.Component {
     if(min >= '20') { // TimeHandler가 실행중일때 8시 20분이 넘으면 reservation 반전
       if(hour === '8' && reservation) {
         SearchActions.start();
-        console.log('th active')
+        console.log('th active');
       }
     }
 
-    if(hour === '12' && !reservation) { // reservation이 false이고 12시가 되면 reservation 반전
-      console.log('th2');
-      SearchActions.start();
-      clearInterval(this.starter);
-      this.handleStarter();
+    if(code === 423 && reservation) {
+      SearchActions.end();
     }
 
-    SearchActions.setTime(remainHour, remainMin, remainSec);
+    if(code === 423 && !reservation) {
+      SearchActions.start();
+      SearchActions.end();
+    }
+
+    if(code !== 423) {
+      SearchActions.setTime(remainHour, remainMin, remainSec);
+    }
   }
-  
 
   handleChange = e => {
     const { value } = e.target;
@@ -113,31 +148,70 @@ class SearchBarContainer extends React.Component {
     SearchActions.input(value);
   }
 
+  handleSearch = () => {
+    const { input } = this.props;
+
+    this.getTSearch(input);
+  }
+
+  enterSearch = e => {
+    if(e.key === 'Enter') {
+      this.handleSearch();
+    }
+  }
+
+  changeResults = index => {
+    const { SearchActions } = this.props;
+
+    SearchActions.cat(index);
+  }
+
   render() {
-    const { input, placeholder, reservation } = this.props;
-    const { handleChange } = this;
+    const { input, placeholder, reservation, Tlist, Allist, Arlist, flag, cat } = this.props;
+    const { handleChange, handleSearch, postApply, changeResults, enterSearch } = this;
     return (
-      <SearchBar
-        value={input}
-        onChange={handleChange}
-        placeholder={placeholder}
-        reservation={reservation}
-      />
+      <>
+        <SearchBar
+          value={input}
+          onChange={handleChange}
+          onClick={handleSearch}
+          onKeyPress={enterSearch}
+          placeholder={placeholder}
+          reservation={reservation}
+        />
+        <SearchResults
+          Tlist={Tlist}
+          Allist={Allist}
+          Arlist={Arlist}
+          cat={cat}
+          flag={flag}
+          onClick={postApply}
+          changeResults={changeResults}
+        />
+      </>
     );
   }
 }
 
-const mapStateToProps = ({ search }) => ({
+const mapStateToProps = ({ search, musicList }) => ({
   input: search.input,
   hour: search.hour,
   min: search.min,
   sec: search.sec,
   placeholder: search.placeholder,
-  reservation: search.reservation
+  reservation: search.reservation,
+  code: musicList.code,
+  list: search.list,
+  flag: search.flag,
+  cat: search.cat,
+  Tlist: search.Tlist,
+  Allist: search.al_list,
+  Arlist: search.ar_list
 });
 
 const mapDispatchToProps = dispatch => ({
-  SearchActions: bindActionCreators(searchActions, dispatch)
+  SearchActions: bindActionCreators(searchActions, dispatch),
+  MusicListActions: bindActionCreators(musicListActions, dispatch)
 });
 
 SearchBarContainer.propTypes = {
@@ -146,13 +220,19 @@ SearchBarContainer.propTypes = {
   // min: PropTypes.number,
   // sec: PropTypes.number,
   input: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  Tlist: PropTypes.array,
+  Allist: PropTypes.array,
+  Arlist: PropTypes.array
 };
 
 SearchBarContainer.defaultProps = {
   reservation: true,
   input: '',
-  placeholder: ''
+  placeholder: '',
+  Tlist: [],
+  Allist: [],
+  Arlist: []
 };
 
 export default connect(
