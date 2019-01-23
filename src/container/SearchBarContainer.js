@@ -100,7 +100,7 @@ class SearchBarContainer extends React.Component {
 
   postApply = async (title, album, artist) => {
     try {
-      const response = await api.postAPLLY(title, album, artist);
+      const response = await api.postAPPLY(title, album, artist);
       const { message, code } = response.data;
       alert(message, code);
     } catch (e) {
