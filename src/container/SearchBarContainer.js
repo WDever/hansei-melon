@@ -103,6 +103,8 @@ class SearchBarContainer extends React.Component {
       const response = await api.postAPPLY(title, album, artist);
       const { message, code } = response.data;
       alert(message, code);
+      // eslint-disable-next-line no-restricted-globals
+      // location.reload();
     } catch (e) {
       console.log(e);
     }
