@@ -10,7 +10,7 @@ import styles from './SearchResults.scss';
 
 const cx = classNames.bind(styles);
 
-const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, focus }) => {
+const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, focus, input }) => {
   const titleList = Tlist.map(item => (
     <SearchItem
       key={item.id}
@@ -18,7 +18,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
       title={item.title}
       src={item.imgSrc}
       artist={item.artist}
-      onClick={() => onClick(item.title, item.album, item.artist)}
+      onClick={() => onClick(item.title, item.album, item.artist, item.id)}
     />
   ));
 
@@ -29,7 +29,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
       title={item.title}
       src={item.imgSrc}
       artist={item.artist}
-      onClick={() => onClick(item.title, item.album, item.artist)}
+      onClick={() => onClick(item.title, item.album, item.artist, item.id)}
     />
   ));
 
@@ -40,7 +40,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
       title={item.title}
       src={item.imgSrc}
       artist={item.artist}
-      onClick={() => onClick(item.title, item.album, item.artist)}
+      onClick={() => onClick(item.title, item.album, item.artist, item.id)}
     />
   ));
 
@@ -70,7 +70,9 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     if (titleList.length === 0) {
       return (
         <div className={cx('change-wrapper')}>
-          <div className={cx('results-wrapper', { visibility: focus })}> 검색 결과가 없습니다. </div>{' '}
+          <div className={cx('results-wrapper', { visibility: focus })}>
+          &quot;<p>{input}</p>&quot;에 대한 검색결과가 존재하지 않습니다.
+          </div>
         </div>
       );
     }
@@ -87,7 +89,9 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     if (artistList.length === 0) {
       return (
         <div className={cx('change-wrapper')}>
-          <div className={cx('results-wrapper', { visibility: focus })}> 검색 결과가 없습니다. </div>{' '}
+          <div className={cx('results-wrapper', { visibility: focus })}>
+            검색 결과가 없습니다.
+          </div>
         </div>
       );
     }

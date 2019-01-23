@@ -57,8 +57,8 @@ class SearchBarContainer extends React.Component {
       const response = await api.getALSearch(input);
 
       await response.data.song_list_album.map(item => {
-        const { title, image_src: imgSrc, album, artist } = item;
-        SearchActions.Alsearch(title, imgSrc, album, artist);
+        const { title, image_src: imgSrc, album, artist, song_id: id } = item;
+        SearchActions.Alsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
       console.log(e);
@@ -71,9 +71,11 @@ class SearchBarContainer extends React.Component {
       const response = await api.getTSearch(input);
 
       response.data.song_list_title.map(item => {
-        const { title, image_src: imgSrc, album, artist } = item;
-        SearchActions.Tsearch(title, imgSrc, album, artist);
+        const { title, image_src: imgSrc, album, artist, song_id: id } = item;
+        SearchActions.Tsearch(title, imgSrc, album, artist, id);
       });
+
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -85,19 +87,20 @@ class SearchBarContainer extends React.Component {
       const response = await api.getARSearch(input);
 
       response.data.song_list_artist.map(item => {
-        const { title, image_src: imgSrc, album, artist } = item;
-        SearchActions.Arsearch(title, imgSrc, album, artist);
+        const { title, image_src: imgSrc, album, artist, song_id: id } = item;
+        SearchActions.Arsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
       console.log(e);
     }
   };
 
-  postApply = async (title, album, artist) => {
+  postApply = async (title, album, artist, id) => {
     try {
-      const response = await api.postAPPLY(title, album, artist);
+      const response = await api.postAPPLY(title, album, artist, id);
       const { message, code } = response.data;
       alert(message, code);
+      console.log(response);
       // eslint-disable-next-line no-restricted-globals
       // location.reload();
     } catch (e) {
@@ -165,6 +168,8 @@ class SearchBarContainer extends React.Component {
     await this.handleLoading();
 
     await this.getTSearch(input);
+
+    SearchActions.flag(true);
 
     await this.handleLoading();
 
@@ -259,6 +264,7 @@ class SearchBarContainer extends React.Component {
           changeResults={changeResults}
           loading={loading}
           focus={focus}
+          input={input}
         />
       </>
     );

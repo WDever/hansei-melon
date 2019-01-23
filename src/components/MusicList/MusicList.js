@@ -14,7 +14,7 @@ const MusicList = ({ list, loading, onClick, check, flag }) => {
       id={item.id}
       title={item.title.concat(' - ', item.artist)}
       src={item.imgSrc}
-      onClick={() => onClick(item.title, item.album, item.artist)}
+      onClick={() => onClick(item.title, item.album, item.artist, item.id)}
     />
   ));
 
@@ -33,6 +33,7 @@ const MusicList = ({ list, loading, onClick, check, flag }) => {
       <div className={cx('top-title')}>
         {check ? 'TOP 100' : `Today's Playlist`}
       </div>
+      {/* {check ? {musicList} : null} */}
       {musicList}
     </div>
   );

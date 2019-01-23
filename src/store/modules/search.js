@@ -11,24 +11,26 @@ const AR_SEARCH = 'search/AR_SEARCH';
 const CAT = 'search/CAT';
 const SEARCH_LOADING = 'search/SEARCH_LOADING';
 const RESET = 'search/RESET';
-const FOCUS = 'searxh/FOCUS';
+const FOCUS = 'search/FOCUS';
+const FLAG = 'search/FLAG';
 
-let id = 0;
+// let id = 0;
 
 export const input = createAction(INPUT, text => text);
 export const setTime = createAction(SET_TIME, (hour, min, sec) => ({ hour, min, sec}));
 export const start = createAction(START);
 export const end = createAction(END);
 // eslint-disable-next-line no-plusplus
-export const Tsearch = createAction(T_SEARCH, (title, imgSrc, album, artist) => ({title, imgSrc, album, artist, id: id++}));
+export const Tsearch = createAction(T_SEARCH, (title, imgSrc, album, artist, id) => ({title, imgSrc, album, artist, id}));
 // eslint-disable-next-line no-plusplus
-export const Alsearch = createAction(AL_SEARCH, (title, imgSrc, album, artist) => ({title, imgSrc, album, artist, id: id++}));
+export const Alsearch = createAction(AL_SEARCH, (title, imgSrc, album, artist, id) => ({title, imgSrc, album, artist, id}));
 // eslint-disable-next-line no-plusplus
-export const Arsearch = createAction(AR_SEARCH, (title, imgSrc, album, artist) => ({title, imgSrc, album, artist, id: id++}));
+export const Arsearch = createAction(AR_SEARCH, (title, imgSrc, album, artist, id) => ({title, imgSrc, album, artist, id}));
 export const cat = createAction(CAT, index => index);
 export const searchLoading = createAction(SEARCH_LOADING);
 export const reset = createAction(RESET);
 export const focus = createAction(FOCUS, bool => bool);
+export const flag = createAction(FLAG, bool => bool);
 
 const initialState = {
   input: '',
@@ -69,7 +71,7 @@ export default handleActions(
       }),
     [T_SEARCH]: (state, action) =>
       produce(state, draft =>{
-        draft.flag = !action.flag;
+        // draft.flag = !action.flag;
         draft.Tlist.push({
           id: action.payload.id,
           title: action.payload.title,
@@ -116,6 +118,10 @@ export default handleActions(
       produce(state, draft => {
         draft.focus = action.payload
       }),
+    [FLAG]: (state, action) =>
+      produce(state, draft => {
+        draft.flag = action.payload
+      })
   },
   initialState
 );

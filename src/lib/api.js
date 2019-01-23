@@ -7,7 +7,7 @@ const playlist = `https://www.hansei-melon.com:8000/api/music-list/`;
 
 export const getTOP = () => axios.get(top);
 
-export const postAPPLY = (title, album, artist) => {
+export const postAPPLY = (title, album, artist, id) => {
   const apply = `https://www.hansei-melon.com:8000/api/apply/`;
   const headers = {
     'Authorization': 'Token 1db7a12af9fdd4a6222c0d020f7ad458ccbfe3b8',
@@ -16,7 +16,8 @@ export const postAPPLY = (title, album, artist) => {
   const postbody = {
     "title": title,
     "singer": artist,
-    "album": album
+    "album": album,
+    "song_id": id
   }
   return axios.post(apply, postbody, {'headers': headers});
 }

@@ -35,8 +35,8 @@ class MusicListContainder extends React.Component {
 
       // eslint-disable-next-line array-callback-return
       response.data.map(item => {
-        const { title, image_src: imgSrc, album, artist } = item;
-        MusicListActions.setData(title, imgSrc, album, artist);
+        const { title, image_src: imgSrc, album, artist, song_id: id } = item;
+        MusicListActions.setData(title, imgSrc, album, artist, id);
       });
 
       console.log(response.data);
@@ -47,12 +47,12 @@ class MusicListContainder extends React.Component {
     }
   };
 
-  postAPPLY = async (title, album, artist) => {
+  postAPPLY = async (title, album, artist, id) => {
     try {
-      const response = await api.postAPPLY(title, album, artist);
+      const response = await api.postAPPLY(title, album, artist, id);
       const { message, code } = response.data;
       alert(message, code);
-      // console.log(response);
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -84,8 +84,8 @@ class MusicListContainder extends React.Component {
 
       // eslint-disable-next-line array-callback-return
       response.data.results.map(item => {
-        const { title, image_src: imgSrc, album, artist } = item;
-        MusicListActions.setData(title, imgSrc, album, artist);
+        const { title, image_src: imgSrc, album, artist, song_id: id } = item;
+        MusicListActions.setData(title, imgSrc, album, artist, id);
       });
       
       return bool ? MusicListActions.loading() : null;

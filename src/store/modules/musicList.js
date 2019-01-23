@@ -7,10 +7,10 @@ const CHECK = 'musicList/CHECK';
 const RESET = 'musicList/RESET';
 const CHECK_CODE = 'musicList/CHECK_CODE';
 
-let id = 0;
+// let id = 0;
 
 // eslint-disable-next-line no-plusplus
-export const setData = createAction(SET_DATA, (title, imgSrc, album, artist) => ({ title, imgSrc, album, artist, id: id++ }));
+export const setData = createAction(SET_DATA, (title, imgSrc, album, artist, id) => ({ title, imgSrc, album, artist, id}));
 export const loading = createAction(LOADING);
 export const check = createAction(CHECK, code => ({ code }));
 export const reset = createAction(RESET);
