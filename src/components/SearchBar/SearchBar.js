@@ -15,6 +15,7 @@ const SearchBar = ({
   onKeyPress,
   changer,
   onFocus,
+  handleKeyDown,
 }) => (
   <div className={cx('search-template')}>
     {changer}
@@ -25,6 +26,7 @@ const SearchBar = ({
         value={value}
         placeholder={reservation ? placeholder : ''}
         onKeyPress={onKeyPress}
+        onKeyDown={handleKeyDown}
         onFocus={() => onFocus(true)}
         onBlur={() => onFocus(false)}
       />

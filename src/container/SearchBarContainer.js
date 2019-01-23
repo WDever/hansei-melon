@@ -175,19 +175,18 @@ class SearchBarContainer extends React.Component {
     this.getARSearch(input);
   };
 
-  handleKeyPress = (e) => {
-    // console.log(e.charCode);
+  handleKeyPress = e => {
     if (e.key === 'Enter') {
       this.handleSearch();
-      // console.log(e);
-      // e.persist();
-    }
-    if (e.charCode === 27) {
-      console.log('press esc')
-      this.handleFocus(false);
-      e.persist();
     }
   };
+
+  handleKeyDown = e => {
+    if (e.key === 'Escape') {
+      this.handleFocus(false);
+      console.log('pressesc');
+    }
+  }
 
   changeResults = async index => {
     const { SearchActions } = this.props;
@@ -233,6 +232,7 @@ class SearchBarContainer extends React.Component {
       changeResults,
       handleKeyPress,
       handleFocus,
+      handleKeyDown,
     } = this;
     return (
       <>
@@ -245,6 +245,7 @@ class SearchBarContainer extends React.Component {
           reservation={reservation}
           changer={<SearchChanger changeResults={changeResults} cat={cat} chageFocus={handleFocus} />}
           onFocus={handleFocus}
+          handleKeyDown={handleKeyDown}
         />
         <SearchResults
           Tlist={Tlist}
