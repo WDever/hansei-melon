@@ -197,6 +197,7 @@ class SearchBarContainer extends React.Component {
     // console.log(Arlist);
     await this.handleLoading();
     await SearchActions.cat(index);
+    await this.handleFocus(true);
     await this.handleLoading();
   };
 
@@ -242,7 +243,7 @@ class SearchBarContainer extends React.Component {
           onKeyPress={handleKeyPress}
           placeholder={placeholder}
           reservation={reservation}
-          changer={<SearchChanger changeResults={changeResults} cat={cat} />}
+          changer={<SearchChanger changeResults={changeResults} cat={cat} chageFocus={handleFocus} />}
           onFocus={handleFocus}
         />
         <SearchResults

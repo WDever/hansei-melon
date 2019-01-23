@@ -70,7 +70,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     if (titleList.length === 0) {
       return (
         <div className={cx('change-wrapper')}>
-          <div className={cx('results-wrapper')}> 검색 결과가 없습니다. </div>{' '}
+          <div className={cx('results-wrapper', { visibility: focus })}> 검색 결과가 없습니다. </div>{' '}
         </div>
       );
     }
@@ -79,7 +79,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
   if (flag && !loading) {
     if (artistList.length !== 0 && cat === 2) {
       return (
-        <div className={cx('results-wrapper')}>
+        <div className={cx('results-wrapper', { visibility: focus })}>
           {artistList}{' '}
         </div>
       );
@@ -87,7 +87,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     if (artistList.length === 0) {
       return (
         <div className={cx('change-wrapper')}>
-          <div className={cx('results-wrapper')}> 검색 결과가 없습니다. </div>{' '}
+          <div className={cx('results-wrapper', { visibility: focus })}> 검색 결과가 없습니다. </div>{' '}
         </div>
       );
     }
@@ -96,14 +96,14 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
   if (flag && !loading) {
     if (albumList.length !== 0 && cat === 3) {
       return (
-        <div className={cx('results-wrapper')}>
+        <div className={cx('results-wrapper', { visibility: focus })}>
           {albumList}{' '}
         </div>
       );
     }
     if (albumList.length === 0) {
       return (
-        <div className={cx('results-wrapper')}>
+        <div className={cx('results-wrapper', { visibility: focus })}>
           검색 결과가 없습니다.{' '}
         </div>
       );
