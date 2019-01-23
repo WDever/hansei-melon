@@ -12,7 +12,7 @@ module.exports = {
       "jsx-a11y/click-events-have-key-events": 1,
       "jsx-a11y/no-static-element-interactions": 1,
       "no-param-reassign": 0,
-      "no-underscore-dangle": 1
+      "no-underscore-dangle": 1,
     },
     "env": {
       "browser": true

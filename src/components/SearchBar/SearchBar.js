@@ -16,6 +16,7 @@ const SearchBar = ({
   changer,
   onFocus,
   handleKeyDown,
+  timeOutFocus,
 }) => (
   <div className={cx('search-template')}>
     {changer}
@@ -28,13 +29,12 @@ const SearchBar = ({
         onKeyPress={onKeyPress}
         onKeyDown={handleKeyDown}
         onFocus={() => onFocus(true)}
-        // onBlur={() => onFocus(false)}
-        // onBlur={setTimeout(onFocus(false), 500)}
+        onBlur={() => timeOutFocus(false)}
       />
       <Icon className={cx('icon')} onClick={onClick} />
     </div>
   </div>
-);
+  );
 
 SearchBar.propTypes = {
   onChange: PropTypes.func,
@@ -42,6 +42,7 @@ SearchBar.propTypes = {
   value: PropTypes.string,
   reservation: PropTypes.bool,
   placeholder: PropTypes.string,
+  onFocus: PropTypes.func,
 };
 
 SearchBar.defaultProps = {
@@ -50,6 +51,7 @@ SearchBar.defaultProps = {
   value: '',
   reservation: true,
   placeholder: '',
+  onFocus: () => console.log('no onFocus!'),
 };
 
 export default SearchBar;

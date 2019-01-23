@@ -26,7 +26,6 @@ class SearchBarContainer extends React.Component {
     if (code === 423 && !reservation) {
       // 예약 시간동안만 false
       SearchActions.start();
-      console.log(reservation);
     }
 
     if (min >= '20' && min <= '59') {
@@ -47,7 +46,6 @@ class SearchBarContainer extends React.Component {
 
       MusicListActions.check(code);
 
-      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -62,7 +60,6 @@ class SearchBarContainer extends React.Component {
         const { title, image_src: imgSrc, album, artist } = item;
         SearchActions.Alsearch(title, imgSrc, album, artist);
       });
-      console.log('album');
     } catch (e) {
       console.log(e);
     }
@@ -77,7 +74,6 @@ class SearchBarContainer extends React.Component {
         const { title, image_src: imgSrc, album, artist } = item;
         SearchActions.Tsearch(title, imgSrc, album, artist);
       });
-      console.log('title');
     } catch (e) {
       console.log(e);
     }
@@ -92,7 +88,6 @@ class SearchBarContainer extends React.Component {
         const { title, image_src: imgSrc, album, artist } = item;
         SearchActions.Arsearch(title, imgSrc, album, artist);
       });
-      console.log('artist');
     } catch (e) {
       console.log(e);
     }
@@ -186,7 +181,6 @@ class SearchBarContainer extends React.Component {
   handleKeyDown = e => {
     if (e.key === 'Escape') {
       this.handleFocus(false);
-      console.log('pressesc');
     }
   }
 
@@ -214,6 +208,10 @@ class SearchBarContainer extends React.Component {
     SearchActions.focus(bool);
   }
 
+  timeOutFocus = (bool) => {
+    setTimeout(() => this.handleFocus(bool), 310);
+  }
+
   render() {
     const {
       input,
@@ -235,6 +233,7 @@ class SearchBarContainer extends React.Component {
       handleKeyPress,
       handleFocus,
       handleKeyDown,
+      timeOutFocus
     } = this;
     return (
       <>
@@ -248,6 +247,7 @@ class SearchBarContainer extends React.Component {
           changer={<SearchChanger changeResults={changeResults} cat={cat} chageFocus={handleFocus} />}
           onFocus={handleFocus}
           handleKeyDown={handleKeyDown}
+          timeOutFocus={timeOutFocus}
         />
         <SearchResults
           Tlist={Tlist}
