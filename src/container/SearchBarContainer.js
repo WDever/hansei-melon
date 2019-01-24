@@ -59,6 +59,7 @@ class SearchBarContainer extends React.Component {
       await response.data.song_list_album.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
         SearchActions.Alsearch(title, imgSrc, album, artist, id);
+        console.log(id);
       });
     } catch (e) {
       console.log(e);
@@ -73,6 +74,7 @@ class SearchBarContainer extends React.Component {
       response.data.song_list_title.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
         SearchActions.Tsearch(title, imgSrc, album, artist, id);
+        console.log(id);
       });
 
       console.log(response);
@@ -89,6 +91,7 @@ class SearchBarContainer extends React.Component {
       response.data.song_list_artist.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
         SearchActions.Arsearch(title, imgSrc, album, artist, id);
+        console.log(id);
       });
     } catch (e) {
       console.log(e);
@@ -99,6 +102,7 @@ class SearchBarContainer extends React.Component {
     try {
       const response = await api.postAPPLY(title, album, artist, id);
       const { message, code } = response.data;
+      console.log(id);
       alert(message, code);
       console.log(response);
       // eslint-disable-next-line no-restricted-globals

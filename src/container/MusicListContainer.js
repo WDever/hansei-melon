@@ -17,10 +17,11 @@ class MusicListContainder extends React.Component {
     const { code } = this.props;
 
     return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
+    // this.getTOP();
   };
 
-  handleClick = async (title, album, artist) => {
-    await this.postAPPLY(title, album, artist);
+  handleClick = async (title, album, artist, id) => {
+    await this.postAPPLY(title, album, artist, id);
     await this.getCHECK();
     const { code } = this.props;
     console.log(code)
@@ -37,6 +38,7 @@ class MusicListContainder extends React.Component {
       response.data.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
         MusicListActions.setData(title, imgSrc, album, artist, id);
+        console.log(id);
       });
 
       console.log(response.data);
@@ -51,6 +53,7 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.postAPPLY(title, album, artist, id);
       const { message, code } = response.data;
+      console.log(id);
       alert(message, code);
       console.log(response);
     } catch (e) {
@@ -82,10 +85,15 @@ class MusicListContainder extends React.Component {
 
       const afterCheck = bool ? null : MusicListActions.reset();
 
+      let id = 0;
+
       // eslint-disable-next-line array-callback-return
       response.data.results.map(item => {
-        const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        MusicListActions.setData(title, imgSrc, album, artist, id);
+        const { title, image_src: imgSrc, album, artist } = item;
+        
+        // eslint-disable-next-line no-plusplus
+        MusicListActions.setData(title, imgSrc, album, artist, id++);
+        console.log(id);
       });
       
       return bool ? MusicListActions.loading() : null;

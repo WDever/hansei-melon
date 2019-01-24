@@ -14,7 +14,7 @@ const SearchItem = ({ title, src, artist, onClick }) => {
           <div className={cx('search-artist')}>{artist}</div>
         </div>
       </div>
-      <div className={cx('search-reservation')} onClick={onClick}>예약하기</div>
+      <div className={cx('search-reservation')} onClick={onClick}>신청하기</div>
     </div>
   )
 }

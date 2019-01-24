@@ -10,7 +10,7 @@ const CHECK_CODE = 'musicList/CHECK_CODE';
 // let id = 0;
 
 // eslint-disable-next-line no-plusplus
-export const setData = createAction(SET_DATA, (title, imgSrc, album, artist, id) => ({ title, imgSrc, album, artist, id}));
+export const setData = createAction(SET_DATA, (title, imgSrc, album, artist, id, url) => ({ title, imgSrc, album, artist, id, url}));
 export const loading = createAction(LOADING);
 export const check = createAction(CHECK, code => ({ code }));
 export const reset = createAction(RESET);
@@ -33,6 +33,7 @@ export default handleActions(
           imgSrc: action.payload.imgSrc,
           album: action.payload.album,
           artist: action.payload.artist,
+          url: action.payload.url
         });
       }),
     [LOADING]: (state, action) =>

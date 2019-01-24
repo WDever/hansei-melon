@@ -2,8 +2,9 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { Circle } from 'better-react-spinkit';
-import MusicItem from '../MusicItem';
 import styles from './MusicList.scss';
+import MusicItem from '../MusicItem';
+// import MusicItem, { PlaylistItem } from '../MusicItem';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +18,17 @@ const MusicList = ({ list, loading, onClick, check, flag }) => {
       onClick={() => onClick(item.title, item.album, item.artist, item.id)}
     />
   ));
+
+  // if (!check) {
+  //   const playList = list.map(item => (
+  //     <PlaylistItem
+  //       key={item.id}
+  //       id={item.id}
+  //       title={item.title.concat(' - ', item.artist)}
+  //       src={item.imgSrc}
+  //     />
+  //   ))
+  // }
 
   if (loading) {
     return (
@@ -33,7 +45,7 @@ const MusicList = ({ list, loading, onClick, check, flag }) => {
       <div className={cx('top-title')}>
         {check ? 'TOP 100' : `Today's Playlist`}
       </div>
-      {/* {check ? {musicList} : null} */}
+      {/* {check ? {musicList} : {playList}} */}
       {musicList}
     </div>
   );
