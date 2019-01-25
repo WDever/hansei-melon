@@ -4,7 +4,8 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import { Circle } from 'better-react-spinkit';
-import SearchItem from '../SearchItem';
+// import SearchItem from '../SearchItem';
+import { SearchItem } from '../MusicItem';
 import styles from './SearchResults.scss';
 // import MusicItem from '../MusicItem';
 
@@ -69,10 +70,8 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     }
     if (titleList.length === 0) {
       return (
-        <div className={cx('change-wrapper')}>
-          <div className={cx('results-wrapper', { visibility: focus })}>
+        <div className={cx('results-wrapper', { visibility: focus })}>
           &quot;<p>{input}</p>&quot;에 대한 검색결과가 존재하지 않습니다.
-          </div>
         </div>
       );
     }
@@ -88,10 +87,8 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     }
     if (artistList.length === 0) {
       return (
-        <div className={cx('change-wrapper')}>
-          <div className={cx('results-wrapper', { visibility: focus })}>
-            검색 결과가 없습니다.
-          </div>
+        <div className={cx('results-wrapper', { visibility: focus })}>
+          &quot;<p>{input}</p>&quot;에 대한 검색결과가 존재하지 않습니다.
         </div>
       );
     }
@@ -108,7 +105,7 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     if (albumList.length === 0) {
       return (
         <div className={cx('results-wrapper', { visibility: focus })}>
-          검색 결과가 없습니다.{' '}
+          &quot;<p>{input}</p>&quot;에 대한 검색결과가 존재하지 않습니다.
         </div>
       );
     }

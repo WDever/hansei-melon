@@ -3,12 +3,11 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import { Circle } from 'better-react-spinkit';
 import styles from './MusicList.scss';
-import MusicItem from '../MusicItem';
-// import MusicItem, { PlaylistItem } from '../MusicItem';
+import MusicItem, { PlaylistItem } from '../MusicItem';
 
 const cx = classNames.bind(styles);
 
-const MusicList = ({ list, loading, onClick, check, flag }) => {
+const MusicList = ({ list, loading, onClick, check }) => {
   const musicList = list.map(item => (
     <MusicItem
       key={item.id}
@@ -19,16 +18,27 @@ const MusicList = ({ list, loading, onClick, check, flag }) => {
     />
   ));
 
-  // if (!check) {
-  //   const playList = list.map(item => (
-  //     <PlaylistItem
-  //       key={item.id}
-  //       id={item.id}
-  //       title={item.title.concat(' - ', item.artist)}
-  //       src={item.imgSrc}
-  //     />
-  //   ))
-  // }
+  if (!check) {
+    const playList = list.map(item => (
+      <PlaylistItem
+        key={item.id}
+        id={item.id}
+        title={item.title.concat(' - ', item.artist)}
+        src={item.imgSrc}
+        detail={item.url}
+      />
+    ));
+
+    return (
+      <div className={cx('list')}>
+        <div className={cx('top-title')}>
+          {check ? 'TOP 100' : `Today's Playlist`}
+        </div>
+        {/* {check ? {musicList} : {playList}} */}
+        {playList}
+      </div>
+    );
+  }
 
   if (loading) {
     return (

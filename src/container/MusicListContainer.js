@@ -89,10 +89,10 @@ class MusicListContainder extends React.Component {
 
       // eslint-disable-next-line array-callback-return
       response.data.results.map(item => {
-        const { title, image_src: imgSrc, album, artist } = item;
+        const { title, image_src: imgSrc, album, artist, music_info_url: url } = item;
         
         // eslint-disable-next-line no-plusplus
-        MusicListActions.setData(title, imgSrc, album, artist, id++);
+        MusicListActions.setData(title, imgSrc, album, artist, id++, url);
         console.log(id);
       });
       
