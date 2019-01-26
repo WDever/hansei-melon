@@ -13,6 +13,7 @@ const SEARCH_LOADING = 'search/SEARCH_LOADING';
 const RESET = 'search/RESET';
 const FOCUS = 'search/FOCUS';
 const FLAG = 'search/FLAG';
+const IS_LOGIN = 'search/IS_LOGIN';
 
 // let id = 0;
 
@@ -31,6 +32,7 @@ export const searchLoading = createAction(SEARCH_LOADING);
 export const reset = createAction(RESET);
 export const focus = createAction(FOCUS, bool => bool);
 export const flag = createAction(FLAG, bool => bool);
+export const isLogin = createAction(IS_LOGIN, bool => bool);
 
 const initialState = {
   input: '',
@@ -46,6 +48,7 @@ const initialState = {
   Arlist: [],
   loading: false,
   focus: false,
+  isLogin: false,
 };
 
 export default handleActions(
@@ -71,7 +74,6 @@ export default handleActions(
       }),
     [T_SEARCH]: (state, action) =>
       produce(state, draft =>{
-        // draft.flag = !action.flag;
         draft.Tlist.push({
           id: action.payload.id,
           title: action.payload.title,
@@ -121,7 +123,11 @@ export default handleActions(
     [FLAG]: (state, action) =>
       produce(state, draft => {
         draft.flag = action.payload
-      })
+      }),
+    [IS_LOGIN]: (state, action) =>
+      produce(state, draft => {
+        draft.flag = action.payload
+      }),
   },
   initialState
 );

@@ -221,6 +221,10 @@ class SearchBarContainer extends React.Component {
     setTimeout(() => this.handleFocus(bool), 310);
   }
 
+  loginCallback = (response) => {
+    console.log(response);
+  }
+
   render() {
     const {
       input,
@@ -242,7 +246,8 @@ class SearchBarContainer extends React.Component {
       handleKeyPress,
       handleFocus,
       handleKeyDown,
-      timeOutFocus
+      timeOutFocus,
+      loginCallback,
     } = this;
     return (
       <>
@@ -253,7 +258,7 @@ class SearchBarContainer extends React.Component {
           onKeyPress={handleKeyPress}
           placeholder={placeholder}
           reservation={reservation}
-          changer={<SearchChanger changeResults={changeResults} cat={cat} chageFocus={handleFocus} />}
+          changer={<SearchChanger changeResults={changeResults} cat={cat} chageFocus={handleFocus} loginCallback={loginCallback} />}
           onFocus={handleFocus}
           handleKeyDown={handleKeyDown}
           timeOutFocus={timeOutFocus}
@@ -290,7 +295,8 @@ const mapStateToProps = ({ search, musicList }) => ({
   Allist: search.Allist,
   Arlist: search.Arlist,
   loading: search.loading,
-  focus: search.focus
+  focus: search.focus,
+  isLogin: search.isLogin,
 });
 
 const mapDispatchToProps = dispatch => ({
