@@ -10,6 +10,7 @@ import SearchChanger from '../components/SearchChanger';
 import * as api from '../lib/api';
 import * as searchActions from '../store/modules/search';
 import * as musicListActions from '../store/modules/musicList';
+import * as loginActions from '../store/modules/login';
 
 class SearchBarContainer extends React.Component {
   componentDidMount = async () => {
@@ -18,19 +19,19 @@ class SearchBarContainer extends React.Component {
     // this.getALSearch();
     await this.getCHECK();
 
-    const { SearchActions, reservation, code } = this.props;
+    const { SearchActions, canReservation, code } = this.props;
 
     const hour = moment().format('H');
     const min = moment().format('m');
 
-    if (code === 423 && !reservation) {
+    if (code === 423 && !canReservation) {
       // 예약 시간동안만 false
       SearchActions.start();
     }
 
     if (min >= '20' && min <= '59') {
       // 신청시간 안에 들어왔을때. true를 false로
-      if (hour >= '8' && hour <= '11' && reservation) {
+      if (hour >= '8' && hour <= '11' && canReservation) {
         SearchActions.start();
       }
     }
@@ -45,7 +46,6 @@ class SearchBarContainer extends React.Component {
       const { code } = response.data;
 
       MusicListActions.check(code);
-
     } catch (e) {
       console.log(e);
     }
@@ -112,6 +112,33 @@ class SearchBarContainer extends React.Component {
     }
   };
 
+  postAccessToken = async accessToken => {
+    const { LoginActions, userInfo } = this.props;
+
+    try {
+      const response = await api.postAccessToken(accessToken);
+
+      const { token } = response.data;
+
+      await LoginActions.verifyToken(token);
+
+      // console.log(response);
+      console.log(userInfo);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  postVerify = async token => {
+    try {
+      const response = await api.postVerify(token);
+
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   handleStarter = hour => {
     const { SearchActions } = this.props;
     this.starter =
@@ -122,7 +149,7 @@ class SearchBarContainer extends React.Component {
 
   TimeHandler = () => {
     // 8시 20분 이전 시간 관리 로직
-    const { SearchActions, reservation, code } = this.props;
+    const { SearchActions, canReservation, code } = this.props;
 
     const hour = moment().format('H');
     const min = moment().format('m');
@@ -136,18 +163,18 @@ class SearchBarContainer extends React.Component {
     const remainSec = total - remainHour * 3600 - remainMin * 60;
 
     if (min >= '20') {
-      // TimeHandler가 실행중일때 8시 20분이 넘으면 reservation 반전
-      if (hour === '8' && reservation) {
+      // TimeHandler가 실행중일때 8시 20분이 넘으면 canReservation 반전
+      if (hour === '8' && canReservation) {
         SearchActions.start();
         console.log('th active');
       }
     }
 
-    if (code === 423 && reservation) {
+    if (code === 423 && canReservation) {
       SearchActions.end();
     }
 
-    if (code === 423 && !reservation) {
+    if (code === 423 && !canReservation) {
       SearchActions.start();
       SearchActions.end();
     }
@@ -191,7 +218,7 @@ class SearchBarContainer extends React.Component {
     if (e.key === 'Escape') {
       this.handleFocus(false);
     }
-  }
+  };
 
   changeResults = async index => {
     const { SearchActions } = this.props;
@@ -211,25 +238,42 @@ class SearchBarContainer extends React.Component {
     SearchActions.searchLoading();
   };
 
-  handleFocus = (bool) => {
+  handleFocus = bool => {
     const { SearchActions } = this.props;
 
     SearchActions.focus(bool);
-  }
+  };
 
-  timeOutFocus = (bool) => {
+  timeOutFocus = bool => {
     setTimeout(() => this.handleFocus(bool), 310);
-  }
+  };
 
-  loginCallback = (response) => {
-    console.log(response);
-  }
+  loginCallback = async response => {
+    // const { LoginActions, userInfo } = this.props;
+    const { LoginActions } = this.props;
+
+    const res = await response;
+
+    const { accessToken, name } = res;
+
+    LoginActions.setInfo(name, accessToken);
+
+    await this.postAccessToken(accessToken);
+
+    const { userInfo } = this.props;
+
+    await this.postVerify(userInfo.verifyToken);
+
+    console.log(res);
+
+    LoginActions.isLogin(true);
+  };
 
   render() {
     const {
       input,
       placeholder,
-      reservation,
+      canReservation,
       Tlist,
       Allist,
       Arlist,
@@ -237,6 +281,8 @@ class SearchBarContainer extends React.Component {
       cat,
       loading,
       focus,
+      isLogin,
+      userInfo,
     } = this.props;
     const {
       handleChange,
@@ -257,8 +303,17 @@ class SearchBarContainer extends React.Component {
           onClick={handleSearch}
           onKeyPress={handleKeyPress}
           placeholder={placeholder}
-          reservation={reservation}
-          changer={<SearchChanger changeResults={changeResults} cat={cat} chageFocus={handleFocus} loginCallback={loginCallback} />}
+          reservation={canReservation}
+          changer={(
+            <SearchChanger
+              changeResults={changeResults}
+              cat={cat}
+              chageFocus={handleFocus}
+              loginCallback={loginCallback}
+              isLogin={isLogin}
+              userInfo={userInfo}
+            />
+          )}
           onFocus={handleFocus}
           handleKeyDown={handleKeyDown}
           timeOutFocus={timeOutFocus}
@@ -280,13 +335,13 @@ class SearchBarContainer extends React.Component {
   }
 }
 
-const mapStateToProps = ({ search, musicList }) => ({
+const mapStateToProps = ({ search, musicList, login }) => ({
   input: search.input,
   hour: search.hour,
   min: search.min,
   sec: search.sec,
   placeholder: search.placeholder,
-  reservation: search.reservation,
+  canReservation: search.canReservation,
   code: musicList.code,
   list: search.list,
   flag: search.flag,
@@ -296,16 +351,18 @@ const mapStateToProps = ({ search, musicList }) => ({
   Arlist: search.Arlist,
   loading: search.loading,
   focus: search.focus,
-  isLogin: search.isLogin,
+  isLogin: login.isLogin,
+  userInfo: login.userInfo,
 });
 
 const mapDispatchToProps = dispatch => ({
   SearchActions: bindActionCreators(searchActions, dispatch),
   MusicListActions: bindActionCreators(musicListActions, dispatch),
+  LoginActions: bindActionCreators(loginActions, dispatch),
 });
 
 SearchBarContainer.propTypes = {
-  reservation: PropTypes.bool,
+  canReservation: PropTypes.bool,
   // hour: PropTypes.number,
   // min: PropTypes.number,
   // sec: PropTypes.number,
@@ -317,7 +374,7 @@ SearchBarContainer.propTypes = {
 };
 
 SearchBarContainer.defaultProps = {
-  reservation: true,
+  canReservation: true,
   input: '',
   placeholder: '',
   Tlist: [],

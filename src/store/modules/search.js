@@ -13,7 +13,6 @@ const SEARCH_LOADING = 'search/SEARCH_LOADING';
 const RESET = 'search/RESET';
 const FOCUS = 'search/FOCUS';
 const FLAG = 'search/FLAG';
-const IS_LOGIN = 'search/IS_LOGIN';
 
 // let id = 0;
 
@@ -32,23 +31,21 @@ export const searchLoading = createAction(SEARCH_LOADING);
 export const reset = createAction(RESET);
 export const focus = createAction(FOCUS, bool => bool);
 export const flag = createAction(FLAG, bool => bool);
-export const isLogin = createAction(IS_LOGIN, bool => bool);
 
 const initialState = {
-  input: '',
-  placeholder: '',
+  input: '', // search input
+  placeholder: '', // placeholder for notice
   hour: null,
   min: null,
-  sec: null,
-  reservation: true,
-  flag: false,
-  cat: 1,
-  Tlist: [],
-  Allist: [],
-  Arlist: [],
-  loading: false,
-  focus: false,
-  isLogin: false,
+  sec: null, // time handling
+  canReservation: true, // 
+  cat: 1, // search category
+  Tlist: [], // title search list
+  Allist: [], // album search list
+  Arlist: [], // artist search list
+  loading: false, // search loading
+  focus: false, // isFocus
+  flag: false, // reun search
 };
 
 export default handleActions(
@@ -66,7 +63,7 @@ export default handleActions(
       }),
     [START]: (state, action) =>
       produce(state, draft => {
-        draft.reservation = !state.reservation;
+        draft.canReservation = !state.canReservation;
       }),
     [END]: (state, action) =>
       produce(state, draft => {
@@ -123,11 +120,7 @@ export default handleActions(
     [FLAG]: (state, action) =>
       produce(state, draft => {
         draft.flag = action.payload
-      }),
-    [IS_LOGIN]: (state, action) =>
-      produce(state, draft => {
-        draft.flag = action.payload
-      }),
+      })
   },
   initialState
 );

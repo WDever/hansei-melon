@@ -34,7 +34,6 @@ const MusicList = ({ list, loading, onClick, check }) => {
         <div className={cx('top-title')}>
           {check ? 'TOP 100' : `Today's Playlist`}
         </div>
-        {/* {check ? {musicList} : {playList}} */}
         {playList}
       </div>
     );
@@ -55,7 +54,6 @@ const MusicList = ({ list, loading, onClick, check }) => {
       <div className={cx('top-title')}>
         {check ? 'TOP 100' : `Today's Playlist`}
       </div>
-      {/* {check ? {musicList} : {playList}} */}
       {musicList}
     </div>
   );

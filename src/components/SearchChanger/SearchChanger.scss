@@ -25,6 +25,17 @@
     }
   }
 
+  .userInfo {
+    width: 10rem;
+    display: flex;
+    justify-content: space-around;
+    font-weight: 500;
+
+    .logout {
+      cursor: pointer;
+    }
+  }
+
   .fb {
     cursor: pointer;
     outline: none;

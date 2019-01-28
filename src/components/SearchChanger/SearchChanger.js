@@ -7,7 +7,7 @@ import styles from './SearchChanger.scss';
 
 const cx = classNames.bind(styles);
 
-const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin }) => {
+const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin, userInfo }) => {
   if (isLogin) {
     return (
       <div className={cx('change-template')}>
@@ -22,10 +22,18 @@ const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin
             앨범
           </div>
         </div>
-        success
+        <div className={cx('userInfo')}>
+          <span>
+            {userInfo.name} 님
+          </span>
+          <span className={cx('logout')}>
+            로그아웃
+          </span>
+        </div>
       </div>
     );
   }
+
   return (
     <div className={cx('change-template')}>
       <div className={cx('change-wrapper')}>
