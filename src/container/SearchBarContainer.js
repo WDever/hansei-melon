@@ -133,6 +133,7 @@ class SearchBarContainer extends React.Component {
     try {
       const response = await api.postVerify(token);
 
+      console.log(`verify`);
       console.log(response);
     } catch (e) {
       console.log(e);
@@ -268,6 +269,8 @@ class SearchBarContainer extends React.Component {
 
     LoginActions.isLogin(true);
   };
+
+  // verifyApply = ()
 
   render() {
     const {
