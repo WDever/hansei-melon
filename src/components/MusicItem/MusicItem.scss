@@ -5,6 +5,7 @@
   flex-direction: column-reverse;
   margin: 2rem;
   cursor: pointer;
+  text-decoration: none;
 
   &:hover {
     .title {
@@ -27,6 +28,7 @@
     font-weight: bold;
     justify-content: center;
     align-items: center;
+    z-index: 1;
   }
 
   .reservation {
@@ -38,6 +40,12 @@
     background-color: rgba(0, 0, 0, 0.74);
     color: white;
     font-weight: bold;
+    z-index: 2;
+  }
+
+  img {
+    position: absolute;
+    z-index: 0;
   }
 }
 

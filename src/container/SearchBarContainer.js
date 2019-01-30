@@ -24,21 +24,40 @@ class SearchBarContainer extends React.Component {
     const hour = moment().format('H');
     const min = moment().format('m');
 
-    if (code === 423 && !canReservation) {
-      // 예약 시간동안만 false
-      SearchActions.start();
-    }
+    const sum = hour * 3600 + min * 60;
 
-    if (min >= '20' && min <= '59') {
-      // 신청시간 안에 들어왔을때. true를 false로
-      if (hour >= '8' && hour <= '11' && canReservation) {
-        SearchActions.start();
-      }
-    }
+    console.log(hour);
+    console.log(min);
+    console.log(sum);
 
-    this.reVerifyStarter = setInterval(() => this.reIsuued(), 1000);
+    // if (code === 423 && !canReservation) {
+    //   SearchActions.start();
+    // }
 
-    this.handleStarter(hour);
+    // if (min >= '20' && min <= '59') {
+    //   // 신청시간 안에 들어왔을때. true를 false로
+    //   if (hour >= '8' && hour <= '11' && canReservation) {
+    //     SearchActions.start();
+    //   }
+    // }
+
+    // if (hour >= '8' && hour <= 11 && min >= '20' && canReservation && code !== 423) {
+    //   SearchActions.start(); // turn to false
+    // }
+
+    // if (total >= 30000 && total <= 43200 && code !== 423) {
+    //   SearchActions.start();
+    // }
+
+
+    
+
+    setInterval(() => this.reIsuued(), 1000);
+
+    setInterval(() => this.TimeHandler(), 1000);
+
+    return sum >= 30000 && sum <= 43200 && code !== 423 ? SearchActions.start() : this.handleStarter(hour);
+    // return sum >= 30000 || sum <= 43200 && code !== 423 ? SearchActions.start() : SearchActions.end(); 이거는 
   };
 
   getCHECK = async () => {
@@ -60,8 +79,8 @@ class SearchBarContainer extends React.Component {
 
       await response.data.song_list_album.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        SearchActions.Alsearch(title, imgSrc, album, artist, id);
         console.log(id);
+        return SearchActions.Alsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
       console.log(e);
@@ -75,8 +94,8 @@ class SearchBarContainer extends React.Component {
 
       response.data.song_list_title.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        SearchActions.Tsearch(title, imgSrc, album, artist, id);
         console.log(id);
+        return SearchActions.Tsearch(title, imgSrc, album, artist, id);
       });
 
       console.log(response);
@@ -92,8 +111,8 @@ class SearchBarContainer extends React.Component {
 
       response.data.song_list_artist.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        SearchActions.Arsearch(title, imgSrc, album, artist, id);
         console.log(id);
+        return SearchActions.Arsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
       console.log(e);
@@ -152,7 +171,9 @@ class SearchBarContainer extends React.Component {
     this.starter =
       hour >= 12
         ? SearchActions.end()
-        : setInterval(() => this.TimeHandler(), 1000);
+        // : setInterval(() => this.TimeHandler(), 1000);
+        : null;
+    return hour >= 12 ? console.log('mistake') : null
   };
 
   reIsuued = () => {
@@ -169,36 +190,49 @@ class SearchBarContainer extends React.Component {
     // 8시 20분 이전 시간 관리 로직
     const { SearchActions, canReservation, code } = this.props;
 
-    const hour = Number(moment().format('H') * 3600);
-    const min = Number(moment().format('m') * 60);
-    const sec = Number(moment().format('s'));
+    const hour = moment().format('H') * 3600;
+    const min = moment().format('m') * 60;
+    const sec = moment().format('s') * 1;
 
-    const total = 30000 - hour - min - sec;
+    const sum = hour + min + sec;
+
+    const total = 30000 - sum;
 
     const remainHour = Math.floor(total / 3600);
     const remainMin = Math.floor((total - remainHour * 3600) / 60);
     const remainSec = total - remainHour * 3600 - remainMin * 60;
 
-    if (min >= '20') {
-      // TimeHandler가 실행중일때 8시 20분이 넘으면 canReservation 반전
-      if (hour === '8' && canReservation) {
-        SearchActions.start();
-        console.log('th active');
-      }
+    // if (min >= '20') {
+    //   // TimeHandler가 실행중일때 8시 20분이 넘으면 canReservation 반전
+    //   if (hour === '8' && canReservation) {
+    //     SearchActions.start();
+    //     console.log('th active');
+    //   }
+    // }
+
+    if (sum === 30000 && canReservation) { // 접속중에 8시 20분이 되면 placeholer 비움
+      SearchActions.start();
     }
 
-    if (code === 423 && canReservation) {
-      SearchActions.end();
-    }
-
-    if (code === 423 && !canReservation) {
+    if (sum >= 43200 || code === 423 && !canReservation) {
       SearchActions.start();
       SearchActions.end();
     }
 
-    if (code !== 423) {
-      SearchActions.setTime(remainHour, remainMin, remainSec);
-    }
+    // if (code === 423 && canReservation) {
+    //   SearchActions.end();
+    // }
+
+    // if (code === 423 && !canReservation) {
+    //   SearchActions.start();
+    //   SearchActions.end();
+    // }
+
+    // if (code !== 423) {
+    //   SearchActions.setTime(remainHour, remainMin, remainSec);
+    // }
+
+    SearchActions.setTime(remainHour, remainMin, remainSec);
   };
 
   handleChange = e => {
@@ -333,7 +367,7 @@ class SearchBarContainer extends React.Component {
             <SearchChanger
               changeResults={changeResults}
               cat={cat}
-              chageFocus={handleFocus}
+              changeFocus={handleFocus}
               loginCallback={loginCallback}
               isLogin={isLogin}
               userInfo={userInfo}
@@ -351,7 +385,6 @@ class SearchBarContainer extends React.Component {
           cat={cat}
           flag={flag}
           onClick={postApply}
-          changeResults={changeResults}
           loading={loading}
           focus={focus}
           input={input}

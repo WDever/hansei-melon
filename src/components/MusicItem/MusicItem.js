@@ -8,9 +8,9 @@ const cx = classNames.bind(styles);
 const MusicItem = ({ title, src, onClick }) => (
   <div
     className={cx('item')}
-    style={{ backgroundImage: `url(${src})` }}
     onClick={onClick}
   >
+    <img src={src} alt="success" />
     <div className={cx('title')}>{title}</div>
     <div className={cx('reservation')}>신청하기</div>
   </div>
@@ -19,9 +19,9 @@ const MusicItem = ({ title, src, onClick }) => (
 export const PlaylistItem = ({ title, src, detail }) => (
   <a
     className={cx('item')}
-    style={{ backgroundImage: `url(${src})` }}
     href={detail}
   >
+    <img src={src} alt="success" />
     <div className={cx('title')}>{title}</div>
     <div className={cx('reservation')}>정보보기</div>
   </a>

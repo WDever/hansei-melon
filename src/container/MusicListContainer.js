@@ -17,8 +17,8 @@ class MusicListContainder extends React.Component {
 
     const { code } = this.props;
 
-    // return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
-    this.getTOP();
+    return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
+    // this.getTOP();
   };
 
   handleClick = async (title, album, artist, id) => {
@@ -35,11 +35,10 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.getTOP();
 
-      // eslint-disable-next-line array-callback-return
       response.data.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        MusicListActions.setData(title, imgSrc, album, artist, id);
         console.log(id);
+        return MusicListActions.setData(title, imgSrc, album, artist, id);
       });
 
       console.log(response.data);
@@ -94,9 +93,9 @@ class MusicListContainder extends React.Component {
       response.data.results.map(item => {
         const { title, image_src: imgSrc, album, artist, music_info_url: url } = item;
         
-        // eslint-disable-next-line no-plusplus
-        MusicListActions.setData(title, imgSrc, album, artist, id++, url);
         console.log(id);
+        // eslint-disable-next-line no-plusplus
+        return MusicListActions.setData(title, imgSrc, album, artist, id++, url);
       });
       
       return bool ? MusicListActions.loading() : null;

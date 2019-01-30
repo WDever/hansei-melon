@@ -29,7 +29,7 @@ const SearchBar = ({
         onKeyPress={onKeyPress}
         onKeyDown={handleKeyDown}
         onFocus={() => onFocus(true)}
-        onBlur={() => timeOutFocus(false)}
+        onBlur={() => onFocus(false)}
       />
       <Icon className={cx('icon')} onClick={onClick} />
     </div>
