@@ -36,6 +36,8 @@ class SearchBarContainer extends React.Component {
       }
     }
 
+    this.reVerifyStarter = setInterval(() => this.reIsuued(), 1000);
+
     this.handleStarter(hour);
   };
 
@@ -100,13 +102,14 @@ class SearchBarContainer extends React.Component {
 
   postApply = async (title, album, artist, id) => {
     try {
-      const response = await api.postAPPLY(title, album, artist, id);
+      const { userInfo } = this.props;
+      const { verifyToken } = userInfo;
+      console.log(verifyToken);
+      const response = await api.postAPPLY(title, album, artist, id, verifyToken);
       const { message, code } = response.data;
       console.log(id);
       alert(message, code);
       console.log(response);
-      // eslint-disable-next-line no-restricted-globals
-      // location.reload();
     } catch (e) {
       console.log(e);
     }
@@ -122,19 +125,23 @@ class SearchBarContainer extends React.Component {
 
       await LoginActions.verifyToken(token);
 
-      // console.log(response);
-      console.log(userInfo);
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
   }
 
-  postVerify = async token => {
+  postVerify = async JWTtoken => {
     try {
-      const response = await api.postVerify(token);
+      const response = await api.postVerify(JWTtoken);
+
+      const { token } = response.data;
 
       console.log(`verify`);
       console.log(response);
+      console.log(token);
+
+      return token;
     } catch (e) {
       console.log(e);
     }
@@ -148,16 +155,25 @@ class SearchBarContainer extends React.Component {
         : setInterval(() => this.TimeHandler(), 1000);
   };
 
+  reIsuued = () => {
+    const { LoginActions, count, userInfo } = this.props;
+    LoginActions.count();
+    console.log(count);
+    if(count === 18000) {
+      this.postAccessToken(userInfo.accessToken);
+      LoginActions.countReset();
+    }
+  }
+
   TimeHandler = () => {
     // 8시 20분 이전 시간 관리 로직
     const { SearchActions, canReservation, code } = this.props;
 
-    const hour = moment().format('H');
-    const min = moment().format('m');
-    const sec = moment().format('s');
+    const hour = Number(moment().format('H') * 3600);
+    const min = Number(moment().format('m') * 60);
+    const sec = Number(moment().format('s'));
 
-    const total =
-      30000 - (Number(hour * 3600) + Number(min * 60) + Number(sec));
+    const total = 30000 - hour - min - sec;
 
     const remainHour = Math.floor(total / 3600);
     const remainMin = Math.floor((total - remainHour * 3600) / 60);
@@ -250,7 +266,6 @@ class SearchBarContainer extends React.Component {
   };
 
   loginCallback = async response => {
-    // const { LoginActions, userInfo } = this.props;
     const { LoginActions } = this.props;
 
     const res = await response;
@@ -261,16 +276,24 @@ class SearchBarContainer extends React.Component {
 
     await this.postAccessToken(accessToken);
 
-    const { userInfo } = this.props;
+    // const { userInfo } = this.props;
 
-    await this.postVerify(userInfo.verifyToken);
+    // await this.postVerify(userInfo.verifyToken);
 
     console.log(res);
 
     LoginActions.isLogin(true);
   };
 
-  // verifyApply = ()
+  logout = () => {
+    window.FB.logout();
+  }
+
+  // verifyApply = () => {
+  //   const { userInfo } = this.props;
+
+    
+  // }
 
   render() {
     const {
@@ -297,6 +320,7 @@ class SearchBarContainer extends React.Component {
       handleKeyDown,
       timeOutFocus,
       loginCallback,
+      logout,
     } = this;
     return (
       <>
@@ -306,7 +330,7 @@ class SearchBarContainer extends React.Component {
           onClick={handleSearch}
           onKeyPress={handleKeyPress}
           placeholder={placeholder}
-          reservation={canReservation}
+          canReservation={canReservation}
           changer={(
             <SearchChanger
               changeResults={changeResults}
@@ -315,6 +339,7 @@ class SearchBarContainer extends React.Component {
               loginCallback={loginCallback}
               isLogin={isLogin}
               userInfo={userInfo}
+              logout={logout}
             />
           )}
           onFocus={handleFocus}
@@ -356,6 +381,7 @@ const mapStateToProps = ({ search, musicList, login }) => ({
   focus: search.focus,
   isLogin: login.isLogin,
   userInfo: login.userInfo,
+  count: login.count,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -7,7 +7,7 @@ import styles from './SearchChanger.scss';
 
 const cx = classNames.bind(styles);
 
-const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin, userInfo }) => {
+const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin, userInfo, logout }) => {
   if (isLogin) {
     return (
       <div className={cx('change-template')}>
@@ -26,7 +26,7 @@ const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin
           <span>
             {userInfo.name} 님
           </span>
-          <span className={cx('logout')}>
+          <span className={cx('logout')} onClick={logout}>
             로그아웃
           </span>
         </div>

@@ -10,7 +10,7 @@ const SearchBar = ({
   onChange,
   onClick,
   value,
-  reservation,
+  canReservation,
   placeholder,
   onKeyPress,
   changer,
@@ -25,7 +25,7 @@ const SearchBar = ({
         className={cx('search')}
         onChange={onChange}
         value={value}
-        placeholder={reservation ? placeholder : ''}
+        placeholder={canReservation ? placeholder : ''}
         onKeyPress={onKeyPress}
         onKeyDown={handleKeyDown}
         onFocus={() => onFocus(true)}
