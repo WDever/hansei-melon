@@ -114,7 +114,8 @@ const mapStateToProps = ({ musicList, search }) => ({
   loading: musicList.loading,
   code: musicList.code,
   check: musicList.check,
-  flag: search.flag
+  flag: search.flag,
+  userInfo: search.userInfo,
 });
 
 const mapDispatchToProps = dispatch => ({

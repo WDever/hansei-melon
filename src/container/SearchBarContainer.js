@@ -286,7 +286,9 @@ class SearchBarContainer extends React.Component {
   };
 
   logout = () => {
+    const { LoginActions } = this.props;
     window.FB.logout();
+    LoginActions.isLogin(false);
   }
 
   // verifyApply = () => {
