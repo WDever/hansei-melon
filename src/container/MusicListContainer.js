@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as musicListActions from '../store/modules/musicList';
 import * as searchActions from '../store/modules/search';
+import * as loginActions from '../store/modules/login';
 import MusicList from '../components/MusicList';
 import * as api from '../lib/api';
 
@@ -16,8 +17,8 @@ class MusicListContainder extends React.Component {
 
     const { code } = this.props;
 
-    return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
-    // this.getTOP();
+    // return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
+    this.getTOP();
   };
 
   handleClick = async (title, album, artist, id) => {
@@ -51,7 +52,9 @@ class MusicListContainder extends React.Component {
 
   postAPPLY = async (title, album, artist, id) => {
     try {
-      const response = await api.postAPPLY(title, album, artist, id);
+      const { userInfo } = this.props;
+      const { JWTToken } = userInfo;
+      const response = await api.postAPPLY(title, album, artist, id, JWTToken);
       const { message, code } = response.data;
       console.log(id);
       alert(message, code);
@@ -109,18 +112,19 @@ class MusicListContainder extends React.Component {
   }
 }
 
-const mapStateToProps = ({ musicList, search }) => ({
+const mapStateToProps = ({ musicList, search, login }) => ({
   list: musicList.list,
   loading: musicList.loading,
   code: musicList.code,
   check: musicList.check,
   flag: search.flag,
-  userInfo: search.userInfo,
+  userInfo: login.userInfo,
 });
 
 const mapDispatchToProps = dispatch => ({
   MusicListActions: bindActionCreators(musicListActions, dispatch),
   SearchActions: bindActionCreators(searchActions, dispatch),
+  LoginActions: bindActionCreators(loginActions, dispatch),
 });
 
 MusicListContainder.propTypes = {

@@ -103,9 +103,9 @@ class SearchBarContainer extends React.Component {
   postApply = async (title, album, artist, id) => {
     try {
       const { userInfo } = this.props;
-      const { verifyToken } = userInfo;
-      console.log(verifyToken);
-      const response = await api.postAPPLY(title, album, artist, id, verifyToken);
+      const { JWTToken } = userInfo;
+      console.log(JWTToken);
+      const response = await api.postAPPLY(title, album, artist, id, JWTToken);
       const { message, code } = response.data;
       console.log(id);
       alert(message, code);
@@ -116,14 +116,14 @@ class SearchBarContainer extends React.Component {
   };
 
   postAccessToken = async accessToken => {
-    const { LoginActions, userInfo } = this.props;
+    const { LoginActions } = this.props;
 
     try {
       const response = await api.postAccessToken(accessToken);
 
       const { token } = response.data;
 
-      await LoginActions.verifyToken(token);
+      await LoginActions.jwtToken(token);
 
       console.log(response);
     } catch (e) {
@@ -275,10 +275,6 @@ class SearchBarContainer extends React.Component {
     LoginActions.setInfo(name, accessToken);
 
     await this.postAccessToken(accessToken);
-
-    // const { userInfo } = this.props;
-
-    // await this.postVerify(userInfo.verifyToken);
 
     console.log(res);
 
