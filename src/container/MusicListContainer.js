@@ -17,8 +17,8 @@ class MusicListContainder extends React.Component {
 
     const { code } = this.props;
 
-    // return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
-    this.getTOP();
+    return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
+    // this.getTOP();
   };
 
   handleClick = async (title, album, artist, id) => {
