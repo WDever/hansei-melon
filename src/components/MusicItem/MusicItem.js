@@ -36,7 +36,7 @@ export const SearchItem = ({ title, src, artist, onClick }) => (
         <div className={cx('search-artist')}>{artist}</div>
       </div>
     </div>
-    <div className={cx('search-reservation')} onClick={onClick}>
+    <div className={cx('search-reservation')} onMouseDown={onClick}>
         신청하기
     </div>
   </div>

@@ -181,7 +181,7 @@ class SearchBarContainer extends React.Component {
     }
   }
 
-  TimeHandler = () => {
+  TimeHandler = async () => {
     const { SearchActions, canReservation, code } = this.props;
 
     const hour = moment().format('H') * 3600;
@@ -215,6 +215,10 @@ class SearchBarContainer extends React.Component {
       } else {
         SearchActions.end();
       }
+    }
+
+    if (sum === 0) {
+      await this.getCHECK();
     }
 
     // if (code === 423 && canReservation) {
@@ -289,13 +293,13 @@ class SearchBarContainer extends React.Component {
     SearchActions.searchLoading();
   };
 
-  handleFocus = bool => {
+  handleFocus =  bool => {
     const { SearchActions } = this.props;
 
     SearchActions.focus(bool);
   };
 
-  timeOutFocus = bool => {
+  timeOutFocus =  bool => {
     setTimeout(() => this.handleFocus(bool), 310);
   };
 
