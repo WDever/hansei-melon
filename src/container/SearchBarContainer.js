@@ -26,10 +26,6 @@ class SearchBarContainer extends React.Component {
 
     const sum = hour * 3600 + min * 60;
 
-    console.log(hour);
-    console.log(min);
-    console.log(sum);
-
     // if (code === 423 && !canReservation) {
     //   SearchActions.start();
     // }
@@ -173,7 +169,6 @@ class SearchBarContainer extends React.Component {
         ? SearchActions.end()
         // : setInterval(() => this.TimeHandler(), 1000);
         : null;
-    return hour >= 12 ? console.log('mistake') : null
   };
 
   reIsuued = () => {
@@ -187,7 +182,6 @@ class SearchBarContainer extends React.Component {
   }
 
   TimeHandler = () => {
-    // 8시 20분 이전 시간 관리 로직
     const { SearchActions, canReservation, code } = this.props;
 
     const hour = moment().format('H') * 3600;
@@ -214,9 +208,13 @@ class SearchBarContainer extends React.Component {
       SearchActions.start();
     }
 
-    if (sum >= 43200 || code === 423 && !canReservation) {
-      SearchActions.start();
-      SearchActions.end();
+    if (sum >= 43200 || code === 423) {
+      if (!canReservation) {
+        SearchActions.start();
+        SearchActions.end();
+      } else {
+        SearchActions.end();
+      }
     }
 
     // if (code === 423 && canReservation) {
@@ -232,7 +230,9 @@ class SearchBarContainer extends React.Component {
     //   SearchActions.setTime(remainHour, remainMin, remainSec);
     // }
 
-    SearchActions.setTime(remainHour, remainMin, remainSec);
+    if (code !== 423 && sum <= 43200) {
+      SearchActions.setTime(remainHour, remainMin, remainSec);
+    }
   };
 
   handleChange = e => {
