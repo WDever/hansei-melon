@@ -304,7 +304,7 @@ class SearchBarContainer extends React.Component {
   };
 
   loginCallback = async response => {
-    const { LoginActions, userInfo } = this.props;
+    const { LoginActions } = this.props;
 
     const res = await response;
 
@@ -316,9 +316,9 @@ class SearchBarContainer extends React.Component {
 
     console.log(res);
 
-    // LoginActions.isLogin(true);
-    
-    return userInfo.accessToken !== '' ? LoginActions.isLogin(true) : null;
+    const { userInfo } = this.props;
+    console.log(userInfo);
+    return userInfo.accessToken !== undefined ? LoginActions.isLogin(true) : null;
   };
 
   logout = () => {
