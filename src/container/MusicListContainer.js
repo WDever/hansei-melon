@@ -52,8 +52,8 @@ class MusicListContainder extends React.Component {
   postAPPLY = async (title, album, artist, id) => {
     try {
       const { userInfo } = this.props;
-      const { JWTToken } = userInfo;
-      const response = await api.postAPPLY(title, album, artist, id, JWTToken);
+      const { keyToken } = userInfo;
+      const response = await api.postAPPLY(title, album, artist, id, keyToken);
       const { message, code } = response.data;
       console.log(id);
       alert(message, code);

@@ -10,9 +10,9 @@ const verify = 'https://www.hansei-melon.com:8000/api-token-verify/';
 
 export const getTOP = () => axios.get(top);
 
-export const postAPPLY = (title, album, artist, id, verifyToken) => {
+export const postAPPLY = (title, album, artist, id, keyToken) => {
   const headers = {
-    Authorization: `JWT ${verifyToken}`,
+    Authorization: `Token ${keyToken}`,
     'Content-Type': 'application/json',
   };
   const postbody = {

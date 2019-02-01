@@ -3,13 +3,13 @@ import { handleActions, createAction } from 'redux-actions';
 
 const IS_LOGIN = 'login/IS_LOGIN';
 const SET_INFO = 'login/SET_INFO'
-const JWT_TOKEN = 'login/VERIFY_TOKEN';
+const KEY_TOKEN = 'login/VERIFY_TOKEN';
 const COUNT = 'login/COUNT';
 const COUNT_RESET= 'login/COUNT_RESET';
 
 export const isLogin = createAction(IS_LOGIN, bool => bool);
 export const setInfo = createAction(SET_INFO, (name, accessToken) => ({ name, accessToken }));
-export const jwtToken = createAction(JWT_TOKEN, token => token);
+export const keyToken = createAction(KEY_TOKEN, token => token);
 export const count = createAction(COUNT);
 export const countReset = createAction(COUNT_RESET);
 
@@ -18,7 +18,7 @@ const initialState = {
   userInfo: {
     name: '',
     accessToken: '',
-    JWTToken: '',
+    keyToken: '',
   },
   count: 0,
 };
@@ -34,9 +34,9 @@ export default handleActions(
         draft.userInfo.name = action.payload.name;
         draft.userInfo.accessToken = action.payload.accessToken;
       }),
-    [JWT_TOKEN]: (state, action) =>
+    [KEY_TOKEN]: (state, action) =>
       produce(state, draft => {
-        draft.userInfo.JWTToken = action.payload
+        draft.userInfo.keyToken = action.payload
       }),
     [COUNT]: (state, action) =>
       produce(state, draft => {

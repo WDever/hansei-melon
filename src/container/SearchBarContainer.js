@@ -17,7 +17,7 @@ class SearchBarContainer extends React.Component {
     // this.getTSearch();
     // this.getARSearch();
     // this.getALSearch();
-    await this.getCHECK();
+    await this.getCHECK(); // check reservation availability
 
     const { SearchActions, canReservation, code } = this.props;
 
@@ -45,15 +45,14 @@ class SearchBarContainer extends React.Component {
     //   SearchActions.start();
     // }
 
-
-    
-
-    setInterval(() => this.reIsuued(), 1000);
+    // setInterval(() => this.reIsuued(), 1000);
 
     setInterval(() => this.TimeHandler(), 1000);
 
-    return sum >= 30000 && sum <= 43200 && code !== 423 ? SearchActions.start() : this.handleStarter(hour);
-    // return sum >= 30000 || sum <= 43200 && code !== 423 ? SearchActions.start() : SearchActions.end(); 이거는 
+    return sum >= 30000 && sum <= 43200 && code !== 423
+      ? SearchActions.start()
+      : this.handleStarter(hour);
+    // return sum >= 30000 || sum <= 43200 && code !== 423 ? SearchActions.start() : SearchActions.end(); 이거는
   };
 
   getCHECK = async () => {
@@ -118,9 +117,9 @@ class SearchBarContainer extends React.Component {
   postApply = async (title, album, artist, id) => {
     try {
       const { userInfo } = this.props;
-      const { JWTToken } = userInfo;
-      console.log(JWTToken);
-      const response = await api.postAPPLY(title, album, artist, id, JWTToken);
+      const { keyToken } = userInfo;
+      console.log(keyToken);
+      const response = await api.postAPPLY(title, album, artist, id, keyToken);
       const { message, code } = response.data;
       console.log(id);
       alert(message, code);
@@ -136,15 +135,15 @@ class SearchBarContainer extends React.Component {
     try {
       const response = await api.postAccessToken(accessToken);
 
-      const { token } = response.data;
+      const { key } = response.data;
 
-      await LoginActions.jwtToken(token);
+      await LoginActions.keyToken(key);
 
       console.log(response);
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   postVerify = async JWTtoken => {
     try {
@@ -160,26 +159,26 @@ class SearchBarContainer extends React.Component {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   handleStarter = hour => {
     const { SearchActions } = this.props;
     this.starter =
       hour >= 12
         ? SearchActions.end()
-        // : setInterval(() => this.TimeHandler(), 1000);
-        : null;
+        : // : setInterval(() => this.TimeHandler(), 1000);
+          null;
   };
 
   reIsuued = () => {
     const { LoginActions, count, userInfo } = this.props;
     LoginActions.count();
     console.log(count);
-    if(count === 18000) {
+    if (count === 18000) {
       this.postAccessToken(userInfo.accessToken);
       LoginActions.countReset();
     }
-  }
+  };
 
   TimeHandler = async () => {
     const { SearchActions, canReservation, code } = this.props;
@@ -204,7 +203,8 @@ class SearchBarContainer extends React.Component {
     //   }
     // }
 
-    if (sum === 30000 && canReservation) { // 접속중에 8시 20분이 되면 placeholer 비움
+    if (sum === 30000 && canReservation) {
+      // 접속중에 8시 20분이 되면 placeholer 비움
       SearchActions.start();
     }
 
@@ -293,13 +293,13 @@ class SearchBarContainer extends React.Component {
     SearchActions.searchLoading();
   };
 
-  handleFocus =  bool => {
+  handleFocus = bool => {
     const { SearchActions } = this.props;
 
     SearchActions.focus(bool);
   };
 
-  timeOutFocus =  bool => {
+  timeOutFocus = bool => {
     setTimeout(() => this.handleFocus(bool), 310);
   };
 
@@ -310,7 +310,7 @@ class SearchBarContainer extends React.Component {
 
     const { accessToken, name } = res;
 
-    LoginActions.setInfo(name, accessToken);
+    await LoginActions.setInfo(name, accessToken);
 
     await this.postAccessToken(accessToken);
 
@@ -323,12 +323,11 @@ class SearchBarContainer extends React.Component {
     const { LoginActions } = this.props;
     window.FB.logout();
     LoginActions.isLogin(false);
-  }
+  };
 
   // verifyApply = () => {
   //   const { userInfo } = this.props;
 
-    
   // }
 
   render() {
@@ -377,7 +376,7 @@ class SearchBarContainer extends React.Component {
               userInfo={userInfo}
               logout={logout}
             />
-          )}
+)}
           onFocus={handleFocus}
           handleKeyDown={handleKeyDown}
           timeOutFocus={timeOutFocus}
