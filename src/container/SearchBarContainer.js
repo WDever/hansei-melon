@@ -255,6 +255,8 @@ class SearchBarContainer extends React.Component {
 
     await this.getTSearch(input);
 
+    SearchActions.noResultsInput(input);
+
     SearchActions.flag(true);
 
     await this.handleLoading();
@@ -346,6 +348,7 @@ class SearchBarContainer extends React.Component {
       focus,
       isLogin,
       userInfo,
+      noResultsInput
     } = this.props;
     const {
       handleChange,
@@ -392,7 +395,7 @@ class SearchBarContainer extends React.Component {
           onClick={postApply}
           loading={loading}
           focus={focus}
-          input={input}
+          noResultsInput={noResultsInput}
         />
       </>
     );
@@ -418,6 +421,7 @@ const mapStateToProps = ({ search, musicList, login }) => ({
   isLogin: login.isLogin,
   userInfo: login.userInfo,
   count: login.count,
+  noResultsInput: search.noResultsInput,
 });
 
 const mapDispatchToProps = dispatch => ({

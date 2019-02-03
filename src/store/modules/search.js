@@ -13,6 +13,7 @@ const SEARCH_LOADING = 'search/SEARCH_LOADING';
 const RESET = 'search/RESET';
 const FOCUS = 'search/FOCUS';
 const FLAG = 'search/FLAG';
+const NO_RESULTS = 'search/NO_RESULTS';
 
 // let id = 0;
 
@@ -31,9 +32,11 @@ export const searchLoading = createAction(SEARCH_LOADING);
 export const reset = createAction(RESET);
 export const focus = createAction(FOCUS, bool => bool);
 export const flag = createAction(FLAG, bool => bool);
+export const noResultsInput = createAction(NO_RESULTS, text => text);
 
 const initialState = {
   input: '', // search input
+  noResultsInput: '',
   placeholder: '', // placeholder for notice
   hour: null,
   min: null,
@@ -120,7 +123,11 @@ export default handleActions(
     [FLAG]: (state, action) =>
       produce(state, draft => {
         draft.flag = action.payload
-      })
+      }),
+    [NO_RESULTS]: (state, action) =>
+      produce(state, draft => {
+        draft.noResultsInput = action.payload
+      }),
   },
   initialState
 );
