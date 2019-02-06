@@ -20,6 +20,8 @@ export const PlaylistItem = ({ title, src, detail }) => (
   <a
     className={cx('item')}
     href={detail}
+    target="_blank"
+    rel="noopener noreferrer" 
   >
     <img src={src} alt="success" />
     <div className={cx('title')}>{title}</div>

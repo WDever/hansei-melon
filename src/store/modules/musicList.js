@@ -7,8 +7,6 @@ const CHECK = 'musicList/CHECK';
 const RESET = 'musicList/RESET';
 const CHECK_CODE = 'musicList/CHECK_CODE';
 
-// let id = 0;
-
 // eslint-disable-next-line no-plusplus
 export const setData = createAction(SET_DATA, (title, imgSrc, album, artist, id, url) => ({ title, imgSrc, album, artist, id, url}));
 export const loading = createAction(LOADING);

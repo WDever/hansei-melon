@@ -15,8 +15,6 @@ const FOCUS = 'search/FOCUS';
 const FLAG = 'search/FLAG';
 const NO_RESULTS = 'search/NO_RESULTS';
 
-// let id = 0;
-
 export const input = createAction(INPUT, text => text);
 export const setTime = createAction(SET_TIME, (hour, min, sec) => ({ hour, min, sec}));
 export const start = createAction(START);
