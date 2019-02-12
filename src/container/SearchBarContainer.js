@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import moment from 'moment';
@@ -19,7 +20,24 @@ class SearchBarContainer extends React.Component {
     // this.getALSearch();
     await this.getCHECK(); // check reservation availability
 
-    const { SearchActions, canReservation, code } = this.props;
+    const { SearchActions, canReservation, code, LoginActions, autoLogin } = this.props;
+
+    // localStorage.clear();
+
+    let autoLoginCheck;
+
+    localStorage.autoLogin === 'false' || undefined ? autoLoginCheck = false : autoLoginCheck = true;
+
+    console.log(localStorage.autoLogin);
+
+    autoLoginCheck ? null : LoginActions.autoLogin();
+
+    localStorage.setItem('autoLogin', autoLogin);
+
+    console.log(autoLogin);
+
+    console.log(localStorage.autoLogin);
+
 
     const hour = moment().format('H');
     const min = moment().format('m');
@@ -306,6 +324,7 @@ class SearchBarContainer extends React.Component {
   };
 
   loginCallback = async response => {
+    console.log('callback');
     const { LoginActions } = this.props;
 
     const res = await response;
@@ -320,11 +339,15 @@ class SearchBarContainer extends React.Component {
 
     const { userInfo } = this.props;
     console.log(userInfo);
+
+    // LoginActions.isLoaded();
     return userInfo.accessToken !== undefined ? LoginActions.isLogin(true) : null;
   };
 
   logout = () => {
-    const { LoginActions } = this.props;
+    const { LoginActions, autoLogin } = this.props;
+    LoginActions.autoLogin();
+    localStorage.setItem('autoLogin', autoLogin);
     window.FB.logout();
     LoginActions.isLogin(false);
   };
@@ -348,7 +371,9 @@ class SearchBarContainer extends React.Component {
       focus,
       isLogin,
       userInfo,
-      noResultsInput
+      noResultsInput,
+      isLoaded,
+      autoLogin,
     } = this.props;
     const {
       handleChange,
@@ -380,6 +405,8 @@ class SearchBarContainer extends React.Component {
               isLogin={isLogin}
               userInfo={userInfo}
               logout={logout}
+              isLoaded={isLoaded}
+              autoLogin={autoLogin}
             />
 )}
           onFocus={handleFocus}
@@ -422,6 +449,8 @@ const mapStateToProps = ({ search, musicList, login }) => ({
   userInfo: login.userInfo,
   count: login.count,
   noResultsInput: search.noResultsInput,
+  isLoaded: login.isLoaded,
+  autoLogin: login.autoLogin,
 });
 
 const mapDispatchToProps = dispatch => ({

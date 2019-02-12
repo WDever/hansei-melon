@@ -7,7 +7,7 @@ import styles from './SearchChanger.scss';
 
 const cx = classNames.bind(styles);
 
-const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin, userInfo, logout }) => {
+const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin, userInfo, logout, isLoaded, autoLogin }) => {
   if (isLogin) {
     return (
       <div className={cx('change-template')}>
@@ -34,6 +34,33 @@ const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin
     );
   }
 
+  // if (!isLogin && isLoaded) {
+  //   return (
+  //     <div className={cx('change-template')}>
+  //       <div className={cx('change-wrapper')}>
+  //         <div className={cx('change', { active: cat === 1 })} onClick={() => changeResults(1)} onBlur={() => console.log('success')}>
+  //           제목
+  //         </div>
+  //         <div className={cx('change', { active: cat === 2 })} onClick={() => changeResults(2)} onBlur={() => console.log('success')}>
+  //           가수
+  //         </div>
+  //         <div className={cx('change', { active: cat === 3 })} onClick={() => changeResults(3)} onBlur={() => console.log('success')}>
+  //           앨범
+  //         </div>
+  //       </div>
+  //       <FacebookLogin
+  //         appId="254473261900602"
+  //         autoLoad
+  //         fields="name,email,picture"
+  //         callback={loginCallback}
+  //         cssClass="fb"
+  //         icon={<TiSocialFacebookCircular />}
+  //         textButton="FACEBOOK ID로 로그인 하기"
+  //       />
+  //     </div>
+  //   );
+  // }
+
   return (
     <div className={cx('change-template')}>
       <div className={cx('change-wrapper')}>
@@ -49,7 +76,8 @@ const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin
       </div>
       <FacebookLogin
         appId="254473261900602"
-        autoLoad
+        autoLoad={autoLogin}
+        // autoLoad
         fields="name,email,picture"
         callback={loginCallback}
         cssClass="fb"
