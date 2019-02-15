@@ -144,6 +144,7 @@ class SearchBarContainer extends React.Component {
       console.log(response);
     } catch (e) {
       console.log(e);
+      alert('로그인 후 다시 시도해주세요.')
     }
   };
 

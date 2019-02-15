@@ -83,6 +83,7 @@ const SearchChanger = ({ changeResults, cat, changeFocus, loginCallback, isLogin
         cssClass="fb"
         icon={<TiSocialFacebookCircular />}
         textButton="FACEBOOK ID로 로그인 하기"
+        isMobile
       />
     </div>
   );
