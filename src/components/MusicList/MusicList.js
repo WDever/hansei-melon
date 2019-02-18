@@ -29,6 +29,18 @@ const MusicList = ({ list, loading, onClick, check }) => {
       />
     ));
 
+    if (playList.length === 0) {
+      return (
+        <div className={cx('list')}>
+          <div className={cx('top-title')}>
+            {check ? 'TOP 100' : `Today's Playlist`}
+          </div>
+          <div className={cx('no-result')}>
+            오늘은 예약된 곡이 없습니다.
+          </div>
+        </div>
+      );
+    }
     return (
       <div className={cx('list')}>
         <div className={cx('top-title')}>
