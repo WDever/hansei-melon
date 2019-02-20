@@ -15,62 +15,7 @@ import * as loginActions from '../store/modules/login';
 
 class SearchBarContainer extends React.Component {
   componentDidMount = async () => {
-    // this.getTSearch();
-    // this.getARSearch();
-    // this.getALSearch();
-    await this.getCHECK(); // check reservation availability
-
-    const { SearchActions, canReservation, code, LoginActions, autoLogin } = this.props;
-
-    // localStorage.clear();
-
-    let autoLoginCheck;
-
-    localStorage.autoLogin === 'false' || undefined ? autoLoginCheck = false : autoLoginCheck = true;
-
-    console.log(localStorage.autoLogin);
-
-    autoLoginCheck ? null : LoginActions.autoLogin();
-
-    localStorage.setItem('autoLogin', autoLogin);
-
-    console.log(autoLogin);
-
-    console.log(localStorage.autoLogin);
-
-
-    const hour = moment().format('H');
-    const min = moment().format('m');
-
-    const sum = hour * 3600 + min * 60;
-
-    // if (code === 423 && !canReservation) {
-    //   SearchActions.start();
-    // }
-
-    // if (min >= '20' && min <= '59') {
-    //   // 신청시간 안에 들어왔을때. true를 false로
-    //   if (hour >= '8' && hour <= '11' && canReservation) {
-    //     SearchActions.start();
-    //   }
-    // }
-
-    // if (hour >= '8' && hour <= 11 && min >= '20' && canReservation && code !== 423) {
-    //   SearchActions.start(); // turn to false
-    // }
-
-    // if (total >= 30000 && total <= 43200 && code !== 423) {
-    //   SearchActions.start();
-    // }
-
-    // setInterval(() => this.reIsuued(), 1000);
-
-    setInterval(() => this.TimeHandler(), 1000);
-
-    return sum >= 30000 && sum <= 43200 && code !== 423
-      ? SearchActions.start()
-      : this.handleStarter(hour);
-    // return sum >= 30000 || sum <= 43200 && code !== 423 ? SearchActions.start() : SearchActions.end(); 이거는
+    localStorage.clear();
   };
 
   getCHECK = async () => {
@@ -189,74 +134,15 @@ class SearchBarContainer extends React.Component {
           null;
   };
 
-  reIsuued = () => {
-    const { LoginActions, count, userInfo } = this.props;
-    LoginActions.count();
-    console.log(count);
-    if (count === 18000) {
-      this.postAccessToken(userInfo.accessToken);
-      LoginActions.countReset();
-    }
-  };
-
-  TimeHandler = async () => {
-    const { SearchActions, canReservation, code } = this.props;
-
-    const hour = moment().format('H') * 3600;
-    const min = moment().format('m') * 60;
-    const sec = moment().format('s') * 1;
-
-    const sum = hour + min + sec;
-
-    const total = 30000 - sum;
-
-    const remainHour = Math.floor(total / 3600);
-    const remainMin = Math.floor((total - remainHour * 3600) / 60);
-    const remainSec = total - remainHour * 3600 - remainMin * 60;
-
-    // if (min >= '20') {
-    //   // TimeHandler가 실행중일때 8시 20분이 넘으면 canReservation 반전
-    //   if (hour === '8' && canReservation) {
-    //     SearchActions.start();
-    //     console.log('th active');
-    //   }
-    // }
-
-    if (sum === 30000 && canReservation) {
-      // 접속중에 8시 20분이 되면 placeholer 비움
-      SearchActions.start();
-    }
-
-    if (sum >= 43200 || code === 423) {
-      if (!canReservation) {
-        SearchActions.start();
-        SearchActions.end();
-      } else {
-        SearchActions.end();
-      }
-    }
-
-    if (sum === 0) {
-      await this.getCHECK();
-    }
-
-    // if (code === 423 && canReservation) {
-    //   SearchActions.end();
-    // }
-
-    // if (code === 423 && !canReservation) {
-    //   SearchActions.start();
-    //   SearchActions.end();
-    // }
-
-    // if (code !== 423) {
-    //   SearchActions.setTime(remainHour, remainMin, remainSec);
-    // }
-
-    if (code !== 423 && sum <= 43200) {
-      SearchActions.setTime(remainHour, remainMin, remainSec);
-    }
-  };
+  // reIssued = () => {
+  //   const { LoginActions, count, userInfo } = this.props;
+  //   LoginActions.count();
+  //   console.log(count);
+  //   if (count === 18000) {
+  //     this.postAccessToken(userInfo.accessToken);
+  //     LoginActions.countReset();
+  //   }
+  // };
 
   handleChange = e => {
     const { value } = e.target;
@@ -341,6 +227,8 @@ class SearchBarContainer extends React.Component {
     const { userInfo } = this.props;
     console.log(userInfo);
 
+    // window.top.location = 'http://localhost:3001/';
+
     // LoginActions.isLoaded();
     return userInfo.accessToken !== undefined ? LoginActions.isLogin(true) : null;
   };
@@ -375,6 +263,7 @@ class SearchBarContainer extends React.Component {
       noResultsInput,
       isLoaded,
       autoLogin,
+      code,
     } = this.props;
     const {
       handleChange,
@@ -413,6 +302,7 @@ class SearchBarContainer extends React.Component {
           onFocus={handleFocus}
           handleKeyDown={handleKeyDown}
           timeOutFocus={timeOutFocus}
+          code={code}
         />
         <SearchResults
           Tlist={Tlist}
@@ -451,7 +341,6 @@ const mapStateToProps = ({ search, musicList, login }) => ({
   count: login.count,
   noResultsInput: search.noResultsInput,
   isLoaded: login.isLoaded,
-  autoLogin: login.autoLogin,
 });
 
 const mapDispatchToProps = dispatch => ({

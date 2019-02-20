@@ -24,7 +24,7 @@ export const postAPPLY = (title, album, artist, id, keyToken) => {
   return axios.post(apply, postbody, { headers });
 };
 
-export const getCHECK = () => axios.get(check);
+export const getCHECK = () => axios.get(check)
 
 export const getPLAYLIST = () => axios.get(playlist);
 
