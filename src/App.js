@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Redirect } from 'react-router-dom';
 import MusicListContainer from './container/MusicListContainer';
 import PageTemplate from './components/PageTemplate';
 import SearchBarContainer from './container/SearchBarContainer';

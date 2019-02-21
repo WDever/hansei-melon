@@ -72,8 +72,8 @@ const cx = classNames.bind(styles);
 class MusicList extends React.Component {
   shouldComponentUpdate = (nextProps, nextState) => {
     const { list, check } = this.props;
-    console.log('qwf',nextProps.list !== list);
-    return list !== nextProps.list;
+    console.log('asdf')
+    return list !== nextProps.list || nextProps.list.length === 0;
   }
   
   render() {

@@ -111,7 +111,9 @@ const SearchResults = ({ flag, cat, Tlist, Allist, Arlist, onClick, loading, foc
     }
   }
 
-  return <div />;
+  return (
+    <div />
+  );
 };
 
 SearchResults.propTypes = {

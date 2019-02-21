@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
-import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,8 +14,21 @@ import * as musicListActions from '../store/modules/musicList';
 import * as loginActions from '../store/modules/login';
 
 class SearchBarContainer extends React.Component {
-  componentDidMount = async () => {
-    localStorage.clear();
+  componentDidMount = () => {
+    const { LoginActions, autoLogin, history } = this.props;
+
+    const userName = localStorage.getItem('userName');
+    const userToken = localStorage.getItem('userToken');
+
+    if (userName === null && userToken === null) {
+      LoginActions.autoLogin(false);
+    } else {
+      LoginActions.autoLogin(true);
+      this.postAccessToken(userToken);
+      LoginActions.setInfo(userName, userToken);
+    }
+
+    console.log(userName, userToken);
   };
 
   getCHECK = async () => {
@@ -37,7 +50,7 @@ class SearchBarContainer extends React.Component {
 
       await response.data.song_list_album.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        console.log(id);
+        // console.log(id);
         return SearchActions.Alsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
@@ -52,7 +65,7 @@ class SearchBarContainer extends React.Component {
 
       response.data.song_list_title.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        console.log(id);
+        // console.log(id);
         return SearchActions.Tsearch(title, imgSrc, album, artist, id);
       });
 
@@ -69,7 +82,7 @@ class SearchBarContainer extends React.Component {
 
       response.data.song_list_artist.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        console.log(id);
+        // console.log(id);
         return SearchActions.Arsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
@@ -89,7 +102,7 @@ class SearchBarContainer extends React.Component {
       console.log(response);
     } catch (e) {
       console.log(e);
-      alert('로그인 후 다시 시도해주세요.')
+      alert('로그인 후 다시 시도해주세요.');
     }
   };
 
@@ -151,12 +164,16 @@ class SearchBarContainer extends React.Component {
     SearchActions.input(value);
   };
 
-  handleSearch = async () => {
+  handleSearch = async e => {
     const { SearchActions, input } = this.props;
+
+    e.preventDefault();
 
     SearchActions.reset();
 
     await this.handleLoading();
+
+    this.handleFocus(true);
 
     await this.getTSearch(input);
 
@@ -212,25 +229,30 @@ class SearchBarContainer extends React.Component {
 
   loginCallback = async response => {
     console.log('callback');
-    const { LoginActions } = this.props;
+    const { LoginActions, history } = this.props;
 
     const res = await response;
 
     const { accessToken, name } = res;
 
+    console.log(typeof accessToken);
+
     await LoginActions.setInfo(name, accessToken);
 
-    await this.postAccessToken(accessToken);
+    localStorage.setItem('userName', name);
+    localStorage.setItem('userToken', accessToken);
+
+    history.push("/");
 
     console.log(res);
 
     const { userInfo } = this.props;
     console.log(userInfo);
 
-    // window.top.location = 'http://localhost:3001/';
-
     // LoginActions.isLoaded();
-    return userInfo.accessToken !== undefined ? LoginActions.isLogin(true) : null;
+    return userInfo.accessToken !== undefined
+      ? LoginActions.isLogin(true)
+      : null;
   };
 
   logout = () => {
@@ -240,11 +262,6 @@ class SearchBarContainer extends React.Component {
     window.FB.logout();
     LoginActions.isLogin(false);
   };
-
-  // verifyApply = () => {
-  //   const { userInfo } = this.props;
-
-  // }
 
   render() {
     const {
@@ -341,6 +358,7 @@ const mapStateToProps = ({ search, musicList, login }) => ({
   count: login.count,
   noResultsInput: search.noResultsInput,
   isLoaded: login.isLoaded,
+  autoLogin: login.autoLogin,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -370,7 +388,9 @@ SearchBarContainer.defaultProps = {
   Arlist: [],
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchBarContainer);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(SearchBarContainer),
+);

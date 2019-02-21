@@ -121,11 +121,10 @@ const cx = classNames.bind(styles);
 // };
 
 class SearchChanger extends React.Component {
-  shouldComponentUpdate = (nextProps, nextState) => {
-    const { isLogin, userInfo } = this.props;
-    console.log(this.props);
-    return nextProps.userInfo.name !== userInfo.name;
-  };
+  // shouldComponentUpdate = (nextProps, nextState) => {
+  //   const { isLogin, userInfo, cat } = this.props;
+  //   return nextProps.userInfo.name !== userInfo.name || cat !== nextProps.cat;
+  // };
 
   render() {
     const {
@@ -138,7 +137,7 @@ class SearchChanger extends React.Component {
       loginCallback,
     } = this.props;
 
-    if (userInfo.name !== '') {
+    if (autoLogin) {
       return (
         <div className={cx('change-template')}>
           <div className={cx('change-wrapper')}>
@@ -171,7 +170,7 @@ class SearchChanger extends React.Component {
       );
     }
 
-    if (userInfo.name === '') {
+    if (!autoLogin) {
       return (
         <div className={cx('change-template')}>
           <div className={cx('change-wrapper')}>
@@ -197,7 +196,6 @@ class SearchChanger extends React.Component {
           <FacebookLogin
             appId="254473261900602"
             autoLoad={autoLogin}
-            // autoLoad
             fields="name,email,picture"
             callback={loginCallback}
             cssClass="fb"

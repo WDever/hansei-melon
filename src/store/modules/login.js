@@ -15,7 +15,7 @@ export const keyToken = createAction(KEY_TOKEN, token => token);
 export const count = createAction(COUNT);
 export const countReset = createAction(COUNT_RESET);
 export const isLoaded = createAction(IS_LOADED);
-export const autoLogin = createAction(AUTOLOGIN);
+export const autoLogin = createAction(AUTOLOGIN, bool => bool);
 
 const initialState = {
   isLogin: false,
@@ -58,7 +58,7 @@ export default handleActions(
       }),
     [AUTOLOGIN]: (state, action) =>
       produce(state, draft => {
-        draft.autoLogin = !state.autoLogin
+        draft.autoLogin = action.payload
       }),
   },
   initialState

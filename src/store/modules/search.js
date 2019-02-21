@@ -35,10 +35,6 @@ export const noResultsInput = createAction(NO_RESULTS, text => text);
 const initialState = {
   input: '', // search input
   noResultsInput: '',
-  placeholder: '', // placeholder for notice
-  hour: null,
-  min: null,
-  sec: null, // time handling
   canReservation: true, // 
   cat: 1, // search category
   Tlist: [], // title search list
@@ -55,20 +51,9 @@ export default handleActions(
       produce(state, draft => {
         draft.input = action.payload
       }),
-    [SET_TIME]: (state, action) =>
-      produce(state, draft => {
-        draft.hour = action.payload.hour;
-        draft.min = action.payload.min;
-        draft.sec = action.payload.sec;
-        draft.placeholder = `예약시간 전입니다.- ${action.payload.hour} : ${action.payload.min} : ${action.payload.sec}`;
-      }),
     [START]: (state, action) =>
       produce(state, draft => {
         draft.canReservation = !state.canReservation;
-      }),
-    [END]: (state, action) =>
-      produce(state, draft => {
-        draft.placeholder = `오늘의 예약이 마감되었습니다.`
       }),
     [T_SEARCH]: (state, action) =>
       produce(state, draft =>{

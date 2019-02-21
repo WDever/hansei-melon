@@ -68,28 +68,28 @@ class SearchBar extends React.Component {
       }));
     }
   }
-  // shouldComponentUpdate = (nextProps, nextState) => {
-  // }
   
   render() {
-    const { changer, onChange, value, canReservation, onKeyPress, handleKeyDown, onFocus, onClick, code } = this.props;
+    const { changer, onChange, canReservation, onKeyPress, handleKeyDown, onFocus, onClick, code } = this.props;
     const { placeholder } = this.state;
     return (
       <div className={cx('search-template')}>
         {changer}
-        <div className={cx('search-bar')}>
+        <form className={cx('search-bar')} onSubmit={onClick}>
           <input
             className={cx('search')}
             onChange={onChange}
-            value={value}
+            // value={value}
             placeholder={canReservation ? placeholder : ''}
-            onKeyPress={onKeyPress}
-            onKeyDown={handleKeyDown}
+            // onKeyPress={onKeyPress}
+            // onKeyDown={handleKeyDown}
             onFocus={() => onFocus(true)}
             onBlur={() => onFocus(false)}
           />
-          <Icon className={cx('icon')} onClick={onClick} />
-        </div>
+          <button type="submit">
+            <Icon className={cx('icon')} />
+          </button>
+        </form>
       </div>
     );
   }

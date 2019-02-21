@@ -82,7 +82,7 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.getPLAYLIST();
 
-      console.log(response);
+      // console.log(response);
 
       const titleCheck = check ? MusicListActions.checkCode() : null;
 
