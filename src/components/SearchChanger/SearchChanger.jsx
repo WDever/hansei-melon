@@ -139,7 +139,6 @@ class SearchChanger extends React.Component {
     } = this.props;
 
     if (userInfo.name !== '') {
-      console.log(this.props);
       return (
         <div className={cx('change-template')}>
           <div className={cx('change-wrapper')}>
@@ -173,7 +172,7 @@ class SearchChanger extends React.Component {
               fields="name,email,picture"
               callback={loginCallback}
               cssClass="fbnone"
-              icon={<TiSocialFacebookCircular />}
+              // icon={<TiSocialFacebookCircular />}
               textButton="FACEBOOK ID로 로그인 하기"
               isMobile
             />
