@@ -38,6 +38,11 @@ class SearchBar extends React.Component {
       }));
     }
   }
+
+  // shouldComponentUpdate = (nextProps, nextState) => {
+  //   console.log('Search Bar');
+  // }
+  
   
 
   setTime = () => {
@@ -98,18 +103,18 @@ class SearchBar extends React.Component {
 SearchBar.propTypes = {
   onChange: PropTypes.func,
   onClick: PropTypes.func,
-  value: PropTypes.string,
+  // value: PropTypes.string,
   // reservation: PropTypes.bool,
-  placeholder: PropTypes.string,
+  // placeholder: PropTypes.string,
   onFocus: PropTypes.func,
 };
 
 SearchBar.defaultProps = {
   onChange: () => console.log('no onChange!'),
   onClick: () => console.log('no onClick!'),
-  value: '',
+  // value: '',
   // reservation: true,
-  placeholder: '',
+  // placeholder: '',
   onFocus: () => console.log('no onFocus!'),
 };
 

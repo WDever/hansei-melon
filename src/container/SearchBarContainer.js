@@ -24,8 +24,7 @@ class SearchBarContainer extends React.Component {
       LoginActions.autoLogin(false);
     } else {
       LoginActions.autoLogin(true);
-      this.postAccessToken(userToken);
-      LoginActions.setInfo(userName, userToken);
+      LoginActions.setInfo(userName, '');
     }
 
     console.log(userName, userToken);
@@ -245,22 +244,23 @@ class SearchBarContainer extends React.Component {
     history.push("/");
 
     console.log(res);
+    this.postAccessToken(accessToken);
 
     const { userInfo } = this.props;
     console.log(userInfo);
 
     // LoginActions.isLoaded();
     return userInfo.accessToken !== undefined
-      ? LoginActions.isLogin(true)
+      ? LoginActions.autoLogin(true)
       : null;
   };
 
   logout = () => {
     const { LoginActions, autoLogin } = this.props;
-    LoginActions.autoLogin();
-    localStorage.setItem('autoLogin', autoLogin);
+    localStorage.clear();
     window.FB.logout();
-    LoginActions.isLogin(false);
+    // LoginActions.autoLogin(false);
+    LoginActions.reset();
   };
 
   render() {

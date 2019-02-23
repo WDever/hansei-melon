@@ -122,8 +122,9 @@ const cx = classNames.bind(styles);
 
 class SearchChanger extends React.Component {
   // shouldComponentUpdate = (nextProps, nextState) => {
-  //   const { isLogin, userInfo, cat } = this.props;
-  //   return nextProps.userInfo.name !== userInfo.name || cat !== nextProps.cat;
+  //   const { isLogin, userInfo, cat, autoLogin } = this.props;
+  //   console.log('Search Changer');
+  //   return nextProps.userInfo.name !== userInfo.name || cat !== nextProps.cat || autoLogin !== nextProps.autoLogin;
   // };
 
   render() {
@@ -137,7 +138,8 @@ class SearchChanger extends React.Component {
       loginCallback,
     } = this.props;
 
-    if (autoLogin) {
+    if (userInfo.name !== '') {
+      console.log(this.props);
       return (
         <div className={cx('change-template')}>
           <div className={cx('change-wrapper')}>
@@ -165,12 +167,22 @@ class SearchChanger extends React.Component {
             <span className={cx('logout')} onClick={logout}>
               로그아웃
             </span>
+            <FacebookLogin
+              appId="254473261900602"
+              autoLoad
+              fields="name,email,picture"
+              callback={loginCallback}
+              cssClass="fbnone"
+              icon={<TiSocialFacebookCircular />}
+              textButton="FACEBOOK ID로 로그인 하기"
+              isMobile
+            />
           </div>
         </div>
       );
     }
 
-    if (!autoLogin) {
+    if (userInfo.name === '') {
       return (
         <div className={cx('change-template')}>
           <div className={cx('change-wrapper')}>
@@ -195,7 +207,7 @@ class SearchChanger extends React.Component {
           </div>
           <FacebookLogin
             appId="254473261900602"
-            autoLoad={autoLogin}
+            // autoLoad
             fields="name,email,picture"
             callback={loginCallback}
             cssClass="fb"
@@ -207,9 +219,7 @@ class SearchChanger extends React.Component {
       );
     }
 
-    return (
-      <div />
-    )
+    return <div />;
   }
 }
 
