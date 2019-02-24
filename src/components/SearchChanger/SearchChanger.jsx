@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { TiSocialFacebookCircular } from 'react-icons/ti';
 import FacebookLogin from 'react-facebook-login';
 import classNames from 'classnames/bind';
+import FaceBookLogin from '../FacebookLogin';
+import LoginSearchChanger from '../LoginSearchChanger';
 import styles from './SearchChanger.scss';
 
 const cx = classNames.bind(styles);
@@ -206,7 +208,7 @@ class SearchChanger extends React.Component {
           </div>
           <FacebookLogin
             appId="254473261900602"
-            // autoLoad
+            autoLoad
             fields="name,email,picture"
             callback={loginCallback}
             cssClass="fb"
@@ -215,6 +217,11 @@ class SearchChanger extends React.Component {
             isMobile
           />
         </div>
+        // <LoginSearchChanger
+        //   loginCallback={loginCallback}
+        //   cat={cat}
+        //   changeResults={changeResults}
+        // />
       );
     }
 
