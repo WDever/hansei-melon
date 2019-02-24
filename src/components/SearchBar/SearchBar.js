@@ -39,12 +39,6 @@ class SearchBar extends React.Component {
     }
   }
 
-  // shouldComponentUpdate = (nextProps, nextState) => {
-  //   console.log('Search Bar');
-  // }
-  
-  
-
   setTime = () => {
     const { code } = this.props;
     const { placeholder } = this.state;
@@ -73,7 +67,7 @@ class SearchBar extends React.Component {
       }));
     }
   }
-  
+
   render() {
     const { changer, onChange, canReservation, onKeyPress, handleKeyDown, onFocus, onClick, code } = this.props;
     const { placeholder } = this.state;

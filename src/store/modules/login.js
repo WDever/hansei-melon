@@ -28,7 +28,7 @@ const initialState = {
     keyToken: '',
   },
   count: 0,
-  autoLogin: false
+  autoLogin: null,
 };
 
 export default handleActions(

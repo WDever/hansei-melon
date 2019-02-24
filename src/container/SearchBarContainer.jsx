@@ -23,8 +23,8 @@ class SearchBarContainer extends React.Component {
     if (userName === null && userToken === null) {
       LoginActions.autoLogin(false);
     } else {
-      LoginActions.autoLogin(true);
       LoginActions.setInfo(userName, '');
+      LoginActions.autoLogin(true);
     }
 
     console.log(userName, userToken);
@@ -259,7 +259,7 @@ class SearchBarContainer extends React.Component {
     const { LoginActions, autoLogin } = this.props;
     localStorage.clear();
     window.FB.logout();
-    // LoginActions.autoLogin(false);
+    LoginActions.autoLogin(false);
     LoginActions.reset();
   };
 
