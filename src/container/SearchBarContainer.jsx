@@ -15,7 +15,7 @@ import * as loginActions from '../store/modules/login';
 
 class SearchBarContainer extends React.Component {
   componentDidMount = () => {
-    const { LoginActions, autoLogin, history } = this.props;
+    const { LoginActions } = this.props;
 
     const userName = localStorage.getItem('userName');
     const userToken = localStorage.getItem('userToken');
@@ -121,21 +121,22 @@ class SearchBarContainer extends React.Component {
     }
   };
 
-  postVerify = async JWTtoken => {
-    try {
-      const response = await api.postVerify(JWTtoken);
+  // verify JWT token
+  // postVerify = async JWTtoken => {
+  //   try {
+  //     const response = await api.postVerify(JWTtoken);
 
-      const { token } = response.data;
+  //     const { token } = response.data;
 
-      console.log(`verify`);
-      console.log(response);
-      console.log(token);
+  //     console.log(`verify`);
+  //     console.log(response);
+  //     console.log(token);
 
-      return token;
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  //     return token;
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   handleStarter = hour => {
     const { SearchActions } = this.props;
@@ -256,7 +257,7 @@ class SearchBarContainer extends React.Component {
   };
 
   logout = () => {
-    const { LoginActions, autoLogin } = this.props;
+    const { LoginActions } = this.props;
     localStorage.clear();
     window.FB.logout();
     LoginActions.autoLogin(false);
