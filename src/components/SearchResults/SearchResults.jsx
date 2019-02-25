@@ -10,7 +10,7 @@ import styles from './SearchResults.scss';
 const cx = classNames.bind(styles);
 
 class SearchResults extends React.Component {
-  shouldComponentUpdate = (nextProps, nextState) => {
+  shouldComponentUpdate = (nextProps) => {
     const { loading, flag, cat, focus } = this.props
     return loading !== nextProps.loading || flag !== nextProps.flag || cat !== nextProps.cat || focus !== nextProps.focus;
   }

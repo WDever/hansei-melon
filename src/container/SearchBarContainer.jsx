@@ -164,10 +164,12 @@ class SearchBarContainer extends React.Component {
     SearchActions.input(value);
   };
 
-  handleSearch = async e => {
-    const { SearchActions, input } = this.props;
+  handleSearch = async text => {
+    const { SearchActions } = this.props;
 
-    e.preventDefault();
+    // e.preventDefault();
+
+    // console.log(e.target);
 
     SearchActions.reset();
 
@@ -175,16 +177,16 @@ class SearchBarContainer extends React.Component {
 
     this.handleFocus(true);
 
-    await this.getTSearch(input);
+    await this.getTSearch(text);
 
-    SearchActions.noResultsInput(input);
+    SearchActions.noResultsInput(text);
 
     SearchActions.flag(true);
 
     await this.handleLoading();
 
-    this.getALSearch(input);
-    this.getARSearch(input);
+    this.getALSearch(text);
+    this.getARSearch(text);
   };
 
   handleKeyPress = e => {

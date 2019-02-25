@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 
 class SearchBar extends React.Component {
   state = {
+    input: '',
     placeholder: '',
   }
 
@@ -68,20 +69,36 @@ class SearchBar extends React.Component {
     }
   }
 
+  onSubmit = e => {
+    e.preventDefault();
+    e.preventDefault();
+    const { input } = this.state;
+    const { onClick } = this.props;
+
+    onClick(input);
+  }
+
+  onChange = e => {
+    const { value } = e.target;
+
+    this.setState(() => ({
+      input: value,
+    }));
+  }
+
   render() {
-    const { changer, onChange, canReservation, onKeyPress, handleKeyDown, onFocus, onClick, code } = this.props;
-    const { placeholder } = this.state;
+    const { changer, canReservation, onFocus } = this.props;
+    const { placeholder, input } = this.state;
+    const { onChange, onSubmit } = this; 
     return (
       <div className={cx('search-template')}>
         {changer}
-        <form className={cx('search-bar')} onSubmit={onClick}>
+        <form className={cx('search-bar')} onSubmit={onSubmit}>
           <input
             className={cx('search')}
             onChange={onChange}
-            // value={value}
+            value={input}
             placeholder={canReservation ? placeholder : ''}
-            // onKeyPress={onKeyPress}
-            // onKeyDown={handleKeyDown}
             onFocus={() => onFocus(true)}
             onBlur={() => onFocus(false)}
           />
@@ -95,7 +112,7 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  onChange: PropTypes.func,
+  // onChange: PropTypes.func,
   onClick: PropTypes.func,
   // value: PropTypes.string,
   // reservation: PropTypes.bool,
@@ -104,7 +121,7 @@ SearchBar.propTypes = {
 };
 
 SearchBar.defaultProps = {
-  onChange: () => console.log('no onChange!'),
+  // onChange: () => console.log('no onChange!'),
   onClick: () => console.log('no onClick!'),
   // value: '',
   // reservation: true,

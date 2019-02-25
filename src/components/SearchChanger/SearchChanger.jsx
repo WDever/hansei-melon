@@ -8,7 +8,7 @@ import styles from './SearchChanger.scss';
 const cx = classNames.bind(styles);
 
 class SearchChanger extends React.Component {
-  shouldComponentUpdate = (nextProps, nextState) => {
+  shouldComponentUpdate = (nextProps) => {
     const { cat, autoLogin } = this.props;
     return cat !== nextProps.cat || autoLogin !== nextProps.autoLogin;
   };

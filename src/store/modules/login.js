@@ -46,15 +46,15 @@ export default handleActions(
       produce(state, draft => {
         draft.userInfo.keyToken = action.payload
       }),
-    [COUNT]: (state, action) =>
+    [COUNT]: (state) =>
       produce(state, draft => {
         draft.count += 1
       }),
-    [COUNT_RESET]: (state, action) =>
+    [COUNT_RESET]: (state) =>
       produce(state, draft => {
         draft.count = 0
       }),
-    [IS_LOADED]: (state, action) =>
+    [IS_LOADED]: (state) =>
       produce(state, draft => {
         draft.isLoaded = !state.isLoded
       }),
@@ -62,7 +62,7 @@ export default handleActions(
       produce(state, draft => {
         draft.autoLogin = action.payload
       }),
-    [RESET]: (state, action) =>
+    [RESET]: (state) =>
       produce(state, draft => {
         draft.userInfo.name = '';
         draft.userInfo.accessToken = '';

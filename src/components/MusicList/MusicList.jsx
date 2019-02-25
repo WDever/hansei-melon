@@ -8,8 +8,8 @@ import MusicItem, { PlaylistItem } from '../MusicItem';
 const cx = classNames.bind(styles);
 
 class MusicList extends React.Component {
-  shouldComponentUpdate = (nextProps, nextState) => {
-    const { list, check } = this.props;
+  shouldComponentUpdate = (nextProps) => {
+    const { list } = this.props;
     console.log(list)
     console.log(nextProps.list)
     console.log(nextProps.list === list || nextProps.list.length === 0)
