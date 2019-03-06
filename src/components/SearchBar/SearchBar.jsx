@@ -44,15 +44,19 @@ class SearchBar extends React.Component {
     const { code } = this.props;
     const { placeholder } = this.state;
 
-    const hour = moment().format('H');
-    const min = moment().format('m');
-    const sec = moment().format('s');
+    const hour = moment().format('H') * 3600;
+    const min = moment().format('m') * 60;
+    const sec = moment().format('s') * 1;
  
-    const sum = hour * 3600 + min * 60 + sec * 1;
+    const sum = hour + min + sec;
 
     if(sum < 30000) {
+      const remainSum = 30000 - sum;
+      const remainHour = Math.floor(remainSum / 3600);
+      const remainMin = Math.floor((remainSum - remainHour * 3600) / 60);
+      const remainSec = remainSum - remainHour * 3600 - remainMin * 60;
       this.setState(() => ({
-        placeholder: `예약시간 전 입니다. - ${hour} : ${min} : ${sec}`       
+        placeholder: `예약시간 전 입니다. - ${remainHour} : ${remainMin} : ${remainSec}`       
       }));
     }
 
@@ -70,7 +74,6 @@ class SearchBar extends React.Component {
   }
 
   onSubmit = e => {
-    e.preventDefault();
     e.preventDefault();
     const { input } = this.state;
     const { onClick } = this.props;

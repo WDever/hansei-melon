@@ -47,6 +47,8 @@ class SearchBarContainer extends React.Component {
     try {
       const response = await api.getALSearch(input);
 
+      console.log(`ALSearchRes${response}`);
+
       await response.data.song_list_album.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
         // console.log(id);
@@ -61,6 +63,8 @@ class SearchBarContainer extends React.Component {
     const { SearchActions } = this.props;
     try {
       const response = await api.getTSearch(input);
+
+      console.log(`TSearchRes${response}`);
 
       response.data.song_list_title.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -78,6 +82,8 @@ class SearchBarContainer extends React.Component {
     const { SearchActions } = this.props;
     try {
       const response = await api.getARSearch(input);
+
+      console.log(`ARSearchRes${response}`);
 
       response.data.song_list_artist.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;

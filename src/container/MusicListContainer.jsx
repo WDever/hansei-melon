@@ -17,6 +17,8 @@ class MusicListContainder extends React.Component {
 
     const { code } = this.props;
 
+    console.log(typeof code);
+
     return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
     // this.getTOP();
   };
@@ -25,7 +27,6 @@ class MusicListContainder extends React.Component {
     await this.postAPPLY(title, album, artist, id);
     await this.getCHECK();
     const { code } = this.props;
-    console.log(code)
     return code === 423 ? this.getPLAYLIST(false) : null;
   }
 
@@ -35,9 +36,11 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.getTOP();
 
+      console.log(`MusicListRes${response}`);
+
       response.data.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        console.log(id);
+        console.log(typeof id);
         return MusicListActions.setData(title, imgSrc, album, artist, id);
       });
 
@@ -82,7 +85,7 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.getPLAYLIST();
 
-      // console.log(response);
+      console.log(`PlayListRes${response}`);
 
       const titleCheck = check ? MusicListActions.checkCode() : null;
 
@@ -94,7 +97,7 @@ class MusicListContainder extends React.Component {
       response.data.results.map(item => {
         const { title, image_src: imgSrc, album, artist, music_info_url: url } = item;
         
-        console.log(id);
+        console.log(typeof id);
         // eslint-disable-next-line no-plusplus
         return MusicListActions.setData(title, imgSrc, album, artist, id++, url);
       });
