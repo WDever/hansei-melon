@@ -17,7 +17,7 @@ class MusicListContainder extends React.Component {
 
     const { code } = this.props;
 
-    console.log(typeof code);
+    // console.log(typeof code);
 
     return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
     // this.getTOP();
@@ -36,19 +36,19 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.getTOP();
 
-      console.log(`MusicListRes${response}`);
+      // console.log(`MusicListRes${response}`);
 
       response.data.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
-        console.log(typeof id);
+        // console.log(item);
         return MusicListActions.setData(title, imgSrc, album, artist, id);
       });
 
-      console.log(response.data);
+      // console.log(response.data);
 
       MusicListActions.loading();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -58,11 +58,11 @@ class MusicListContainder extends React.Component {
       const { keyToken } = userInfo;
       const response = await api.postAPPLY(title, album, artist, id, keyToken);
       const { message, code } = response.data;
-      console.log(id);
+      // console.log(id);
       alert(message, code);
-      console.log(response);
+      // console.log(response);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       alert('로그인 후 다시 시도해주세요.')
     }
   }
@@ -75,7 +75,7 @@ class MusicListContainder extends React.Component {
 
       MusicListActions.check(code);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 
@@ -85,7 +85,7 @@ class MusicListContainder extends React.Component {
     try {
       const response = await api.getPLAYLIST();
 
-      console.log(`PlayListRes${response}`);
+      // console.log(response);
 
       const titleCheck = check ? MusicListActions.checkCode() : null;
 
@@ -97,14 +97,14 @@ class MusicListContainder extends React.Component {
       response.data.results.map(item => {
         const { title, image_src: imgSrc, album, artist, music_info_url: url } = item;
         
-        console.log(typeof id);
+        // console.log(item);
         // eslint-disable-next-line no-plusplus
         return MusicListActions.setData(title, imgSrc, album, artist, id++, url);
       });
       
       return bool ? MusicListActions.loading() : null;
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

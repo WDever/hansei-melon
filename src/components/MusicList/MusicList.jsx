@@ -10,9 +10,9 @@ const cx = classNames.bind(styles);
 class MusicList extends React.Component {
   shouldComponentUpdate = (nextProps) => {
     const { list } = this.props;
-    console.log(list)
-    console.log(nextProps.list)
-    console.log(nextProps.list === list || nextProps.list.length === 0)
+    // console.log(list)
+    // console.log(nextProps.list)
+    // console.log(nextProps.list === list || nextProps.list.length === 0)
     return nextProps.list === list || nextProps.list.length === 0;
   }
   

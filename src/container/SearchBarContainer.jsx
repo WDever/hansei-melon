@@ -27,7 +27,7 @@ class SearchBarContainer extends React.Component {
       LoginActions.autoLogin(true);
     }
 
-    console.log(userName, userToken);
+    // console.log(userName, userToken);
   };
 
   getCHECK = async () => {
@@ -38,7 +38,7 @@ class SearchBarContainer extends React.Component {
 
       MusicListActions.check(code);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -47,7 +47,7 @@ class SearchBarContainer extends React.Component {
     try {
       const response = await api.getALSearch(input);
 
-      console.log(`ALSearchRes${response}`);
+      // console.log(`ALSearchRes${response}`);
 
       await response.data.song_list_album.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -55,7 +55,7 @@ class SearchBarContainer extends React.Component {
         return SearchActions.Alsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -64,7 +64,7 @@ class SearchBarContainer extends React.Component {
     try {
       const response = await api.getTSearch(input);
 
-      console.log(`TSearchRes${response}`);
+      // console.log(`TSearchRes${response}`);
 
       response.data.song_list_title.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -72,9 +72,9 @@ class SearchBarContainer extends React.Component {
         return SearchActions.Tsearch(title, imgSrc, album, artist, id);
       });
 
-      console.log(response);
+      // console.log(response);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -83,7 +83,7 @@ class SearchBarContainer extends React.Component {
     try {
       const response = await api.getARSearch(input);
 
-      console.log(`ARSearchRes${response}`);
+      // console.log(`ARSearchRes${response}`);
 
       response.data.song_list_artist.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -91,7 +91,7 @@ class SearchBarContainer extends React.Component {
         return SearchActions.Arsearch(title, imgSrc, album, artist, id);
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -99,14 +99,14 @@ class SearchBarContainer extends React.Component {
     try {
       const { userInfo } = this.props;
       const { keyToken } = userInfo;
-      console.log(keyToken);
+      // console.log(keyToken);
       const response = await api.postAPPLY(title, album, artist, id, keyToken);
       const { message, code } = response.data;
-      console.log(id);
+      // console.log(id);
       alert(message, code);
-      console.log(response);
+      // console.log(response);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       alert('로그인 후 다시 시도해주세요.');
     }
   };
@@ -121,9 +121,9 @@ class SearchBarContainer extends React.Component {
 
       await LoginActions.keyToken(key);
 
-      console.log(response);
+      // console.log(response);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -236,14 +236,14 @@ class SearchBarContainer extends React.Component {
   };
 
   loginCallback = async response => {
-    console.log('callback');
+    // console.log('callback');
     const { LoginActions, history } = this.props;
 
     const res = await response;
 
     const { accessToken, name } = res;
 
-    console.log(typeof accessToken);
+    // console.log(typeof accessToken);
 
     await LoginActions.setInfo(name, accessToken);
 
@@ -252,11 +252,11 @@ class SearchBarContainer extends React.Component {
 
     history.push("/");
 
-    console.log(res);
+    // console.log(res);
     this.postAccessToken(accessToken);
 
     const { userInfo } = this.props;
-    console.log(userInfo);
+    // console.log(userInfo);
 
     // LoginActions.isLoaded();
     return userInfo.accessToken !== undefined
