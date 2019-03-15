@@ -14,6 +14,12 @@ import * as musicListActions from '../store/modules/musicList';
 import * as loginActions from '../store/modules/login';
 
 class SearchBarContainer extends React.Component {
+  state = {
+    titleLoading: true,
+    artistLoading: true,
+    albumLoading: true,
+  };
+
   componentDidMount = () => {
     const { LoginActions } = this.props;
 
@@ -45,26 +51,47 @@ class SearchBarContainer extends React.Component {
   getALSearch = async input => {
     const { SearchActions } = this.props;
     try {
-      const response = await api.getALSearch(input);
+      await this.setState(() => ({
+        albumLoading: true,
+      }));
 
+      const response = await api.getALSearch(input);
       // console.log(`ALSearchRes${response}`);
+      console.log(response);
 
       await response.data.song_list_album.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
         // console.log(id);
         return SearchActions.Alsearch(title, imgSrc, album, artist, id);
       });
+
+      await this.setState(() => ({
+        albumLoading: false,
+      }));
     } catch (e) {
-      // console.log(e);
+      await this.setState(() => ({
+        albumLoading: true,
+      }));
+
+      console.log(e);
+
+      await this.setState(() => ({
+        albumLoading: false,
+      }));
     }
   };
 
   getTSearch = async input => {
     const { SearchActions } = this.props;
     try {
+      await this.setState(() => ({
+        titleLoading: true,
+      }));
+
       const response = await api.getTSearch(input);
 
       // console.log(`TSearchRes${response}`);
+      console.log(response);
 
       response.data.song_list_title.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -72,26 +99,54 @@ class SearchBarContainer extends React.Component {
         return SearchActions.Tsearch(title, imgSrc, album, artist, id);
       });
 
+      await this.setState(() => ({
+        titleLoading: false,
+      }));
+
       // console.log(response);
     } catch (e) {
-      // console.log(e);
+      await this.setState(() => ({
+        titleLoading: true,
+      }));
+
+      console.log(e);
+
+      await this.setState(() => ({
+        titleLoading: false,
+      }));
     }
   };
 
   getARSearch = async input => {
     const { SearchActions } = this.props;
     try {
+      await this.setState(() => ({
+        artistLoading: true,
+      }));
+
       const response = await api.getARSearch(input);
 
       // console.log(`ARSearchRes${response}`);
+      console.log(response);
 
       response.data.song_list_artist.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
         // console.log(id);
         return SearchActions.Arsearch(title, imgSrc, album, artist, id);
       });
+      await this.setState(() => ({
+        artistLoading: false,
+      }));
     } catch (e) {
-      // console.log(e);
+      await this.setState(() => ({
+        artistLoading: true,
+      }));
+
+      console.log(e);
+
+      await this.setState(() => ({
+        artistLoading: false,
+      }));
     }
   };
 
@@ -153,16 +208,6 @@ class SearchBarContainer extends React.Component {
           null;
   };
 
-  // reIssued = () => {
-  //   const { LoginActions, count, userInfo } = this.props;
-  //   LoginActions.count();
-  //   console.log(count);
-  //   if (count === 18000) {
-  //     this.postAccessToken(userInfo.accessToken);
-  //     LoginActions.countReset();
-  //   }
-  // };
-
   handleChange = e => {
     const { value } = e.target;
     const { SearchActions } = this.props;
@@ -171,11 +216,7 @@ class SearchBarContainer extends React.Component {
   };
 
   handleSearch = async text => {
-    const { SearchActions } = this.props;
-
-    // e.preventDefault();
-
-    // console.log(e.target);
+    const { SearchActions, cat } = this.props;
 
     SearchActions.reset();
 
@@ -183,16 +224,21 @@ class SearchBarContainer extends React.Component {
 
     this.handleFocus(true);
 
-    await this.getTSearch(text);
+    this.getTSearch(text);
+    this.getARSearch(text);
+    this.getALSearch(text);
 
     SearchActions.noResultsInput(text);
 
     SearchActions.flag(true);
 
-    await this.handleLoading();
+    // this.setState(() => ({
+    //   titleLoading: true,
+    //   artistLoading: true,
+    //   albumLoading: true,
+    // }));
 
-    this.getALSearch(text);
-    this.getARSearch(text);
+    await this.handleLoading();
   };
 
   handleKeyPress = e => {
@@ -250,7 +296,7 @@ class SearchBarContainer extends React.Component {
     localStorage.setItem('userName', name);
     localStorage.setItem('userToken', accessToken);
 
-    history.push("/");
+    history.push('/');
 
     // console.log(res);
     this.postAccessToken(accessToken);
@@ -291,6 +337,7 @@ class SearchBarContainer extends React.Component {
       autoLogin,
       code,
     } = this.props;
+
     const {
       handleChange,
       handleSearch,
@@ -303,6 +350,9 @@ class SearchBarContainer extends React.Component {
       loginCallback,
       logout,
     } = this;
+
+    const { titleLoading, artistLoading, albumLoading } = this.state;
+
     return (
       <>
         <SearchBar
@@ -340,6 +390,9 @@ class SearchBarContainer extends React.Component {
           loading={loading}
           focus={focus}
           noResultsInput={noResultsInput}
+          titleLoading={titleLoading}
+          artistLoading={artistLoading}
+          albumLoading={albumLoading}
         />
       </>
     );

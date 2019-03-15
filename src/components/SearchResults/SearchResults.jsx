@@ -10,11 +10,24 @@ import styles from './SearchResults.scss';
 const cx = classNames.bind(styles);
 
 class SearchResults extends React.Component {
-  shouldComponentUpdate = (nextProps) => {
-    const { loading, flag, cat, focus } = this.props
-    return loading !== nextProps.loading || flag !== nextProps.flag || cat !== nextProps.cat || focus !== nextProps.focus;
-  }
-  
+  // shouldComponentUpdate = (nextProps) => {
+  //   const { loading, flag, cat, focus, Tlist, Arlist, Allist } = this.props
+  //   return loading !== nextProps.loading || flag !== nextProps.flag || cat !== nextProps.cat || focus !== nextProps.focus || nextProps.Tlist !== Tlist || nextProps.Arlist !== Arlist || nextProps.Allist !== Allist;
+  // }
+
+  // shouldComponentUpdate = nextProps => {
+  //   const { loading, flag, cat, focus, Tlist, Arlist, Allist } = this.props;
+  //   return (
+  //     loading !== nextProps.loading ||
+  //     flag !== nextProps.flag ||
+  //     cat !== nextProps.cat ||
+  //     focus !== nextProps.focus ||
+  //     nextProps.Tlist !== Tlist ||
+  //     nextProps.Arlist !== Arlist ||
+  //     nextProps.Allist !== Allist
+  //   );
+  // };
+
   render() {
     const {
       Tlist,
@@ -26,6 +39,9 @@ class SearchResults extends React.Component {
       flag,
       noResultsInput,
       cat,
+      titleLoading,
+      artistLoading,
+      albumLoading,
     } = this.props;
 
     const titleList = Tlist.map(item => (
@@ -67,24 +83,22 @@ class SearchResults extends React.Component {
       artistList.length = 0;
     };
 
-    if (loading) {
-      reset();
-      return (
-        <div className={cx('results-wrapper', { visibility: focus })}>
-          <Circle color="black" size={60} />{' '}
-        </div>
-      );
-    }
-
-    if (flag && !loading) {
-      if (titleList.length !== 0 && cat === 1) {
+    if (cat === 1 && flag) {
+      if (titleLoading) {
+        return (
+          <div className={cx('results-wrapper', { visibility: focus })}>
+            <Circle color="black" size={60} />{' '}
+          </div>
+        );
+      }
+      if (!titleLoading && titleList.length) {
         return (
           <div className={cx('results-wrapper', { visibility: focus })}>
             {titleList}{' '}
           </div>
         );
       }
-      if (titleList.length === 0) {
+      if (!titleLoading && !titleList.length) {
         return (
           <div className={cx('results-wrapper', { visibility: focus })}>
             &quot;
@@ -95,15 +109,22 @@ class SearchResults extends React.Component {
       }
     }
 
-    if (flag && !loading) {
-      if (artistList.length !== 0 && cat === 2) {
+    if (cat === 2 && flag) {
+      if (artistLoading) {
+        return (
+          <div className={cx('results-wrapper', { visibility: focus })}>
+            <Circle color="black" size={60} />{' '}
+          </div>
+        );
+      }
+      if (!artistLoading && artistList.length) {
         return (
           <div className={cx('results-wrapper', { visibility: focus })}>
             {artistList}{' '}
           </div>
         );
       }
-      if (artistList.length === 0) {
+      if (!artistLoading && !artistList.length) {
         return (
           <div className={cx('results-wrapper', { visibility: focus })}>
             &quot;
@@ -114,15 +135,22 @@ class SearchResults extends React.Component {
       }
     }
 
-    if (flag && !loading) {
-      if (albumList.length !== 0 && cat === 3) {
+    if (cat === 3 && flag) {
+      if (albumLoading) {
+        return (
+          <div className={cx('results-wrapper', { visibility: focus })}>
+            <Circle color="black" size={60} />{' '}
+          </div>
+        );
+      }
+      if (!albumLoading && albumList.length) {
         return (
           <div className={cx('results-wrapper', { visibility: focus })}>
             {albumList}{' '}
           </div>
         );
       }
-      if (albumList.length === 0) {
+      if (!albumLoading && !albumList.length) {
         return (
           <div className={cx('results-wrapper', { visibility: focus })}>
             &quot;
@@ -132,7 +160,6 @@ class SearchResults extends React.Component {
         );
       }
     }
-
     return <div />;
   }
 }
