@@ -10,23 +10,27 @@ import styles from './SearchResults.scss';
 const cx = classNames.bind(styles);
 
 class SearchResults extends React.Component {
-  // shouldComponentUpdate = (nextProps) => {
-  //   const { loading, flag, cat, focus, Tlist, Arlist, Allist } = this.props
-  //   return loading !== nextProps.loading || flag !== nextProps.flag || cat !== nextProps.cat || focus !== nextProps.focus || nextProps.Tlist !== Tlist || nextProps.Arlist !== Arlist || nextProps.Allist !== Allist;
-  // }
+  shouldComponentUpdate = (nextProps, nextState) => {
+    const {
+      Tlist,
+      Allist,
+      Arlist,
+      cat,
+      titleLoading,
+      artistLoading,
+      albumLoading,
+    } = this.props;
 
-  // shouldComponentUpdate = nextProps => {
-  //   const { loading, flag, cat, focus, Tlist, Arlist, Allist } = this.props;
-  //   return (
-  //     loading !== nextProps.loading ||
-  //     flag !== nextProps.flag ||
-  //     cat !== nextProps.cat ||
-  //     focus !== nextProps.focus ||
-  //     nextProps.Tlist !== Tlist ||
-  //     nextProps.Arlist !== Arlist ||
-  //     nextProps.Allist !== Allist
-  //   );
-  // };
+    return (
+      nextProps.Tlist !== Tlist ||
+      nextProps.Allist !== Allist ||
+      nextProps.Arlist !== Arlist ||
+      nextProps.cat !== cat ||
+      nextProps.titleLoading !== titleLoading ||
+      nextProps.albumLoading !== albumLoading ||
+      nextProps.artistList !== artistLoading
+    );
+  };
 
   render() {
     const {
@@ -34,7 +38,6 @@ class SearchResults extends React.Component {
       Allist,
       Arlist,
       onClick,
-      loading,
       focus,
       flag,
       noResultsInput,
@@ -76,12 +79,6 @@ class SearchResults extends React.Component {
         onClick={() => onClick(item.title, item.album, item.artist, item.id)}
       />
     ));
-
-    const reset = async () => {
-      titleList.length = 0;
-      albumList.length = 0;
-      artistList.length = 0;
-    };
 
     if (cat === 1 && flag) {
       if (titleLoading) {
