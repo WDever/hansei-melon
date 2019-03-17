@@ -57,7 +57,7 @@ class SearchBarContainer extends React.Component {
 
       const response = await api.getALSearch(input);
       // console.log(`ALSearchRes${response}`);
-      console.log(response);
+      // console.log(response);
 
       await response.data.song_list_album.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -73,7 +73,7 @@ class SearchBarContainer extends React.Component {
         albumLoading: true,
       }));
 
-      console.log(e);
+      // console.log(e);
 
       await this.setState(() => ({
         albumLoading: false,
@@ -91,7 +91,7 @@ class SearchBarContainer extends React.Component {
       const response = await api.getTSearch(input);
 
       // console.log(`TSearchRes${response}`);
-      console.log(response);
+      // console.log(response);
 
       response.data.song_list_title.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -109,7 +109,7 @@ class SearchBarContainer extends React.Component {
         titleLoading: true,
       }));
 
-      console.log(e);
+      // console.log(e);
 
       await this.setState(() => ({
         titleLoading: false,
@@ -127,7 +127,7 @@ class SearchBarContainer extends React.Component {
       const response = await api.getARSearch(input);
 
       // console.log(`ARSearchRes${response}`);
-      console.log(response);
+      // console.log(response);
 
       response.data.song_list_artist.map(item => {
         const { title, image_src: imgSrc, album, artist, song_id: id } = item;
@@ -142,7 +142,7 @@ class SearchBarContainer extends React.Component {
         artistLoading: true,
       }));
 
-      console.log(e);
+      // console.log(e);
 
       await this.setState(() => ({
         artistLoading: false,
@@ -159,10 +159,13 @@ class SearchBarContainer extends React.Component {
       const { message, code } = response.data;
       // console.log(id);
       alert(message, code);
+
+      this.handleFocus(true);
       // console.log(response);
     } catch (e) {
       // console.log(e);
       alert('로그인 후 다시 시도해주세요.');
+      this.handleFocus(true);
     }
   };
 
