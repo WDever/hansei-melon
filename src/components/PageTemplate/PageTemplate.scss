@@ -7,3 +7,15 @@
     margin: 1rem 0 4rem 0;
   }
 }
+
+footer {
+  font-size: 0.5rem;
+  display: flex;
+  justify-content: center;
+
+  .footer {
+    text-decoration: none;
+    color: grey;
+    margin: 1rem;
+  }
+}
