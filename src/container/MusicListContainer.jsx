@@ -10,8 +10,10 @@ import MusicList from '../components/MusicList';
 import * as api from '../lib/api';
 
 class MusicListContainder extends React.Component {
-  async componentDidMount () {
+  async componentDidMount() {
+    const { MusicListActions, list, status } = this.props;
     await this.getCHECK();
+    // await MusicListActions.reset();
 
     const hour = moment().format('H');
 
@@ -19,19 +21,20 @@ class MusicListContainder extends React.Component {
 
     // console.log(typeof code);
 
-    return code === 423 || hour >= 12 ? this.getPLAYLIST(true) : this.getTOP();
-    // this.getTOP();
-  };
+    return (code === 423 || hour >= 12) && status === 'none' ? this.getPLAYLIST(true) : this.getTOP();
+    // return (code === 423 || hour >= 12) && status === 'none' ? this.getTOP() : null;
+    // return list.length === 0 ? this.getTOP() : null;
+  }
 
   handleClick = async (title, album, artist, id) => {
     await this.postAPPLY(title, album, artist, id);
     await this.getCHECK();
     const { code } = this.props;
     return code === 423 ? this.getPLAYLIST(false) : null;
-  }
+  };
 
   getTOP = async () => {
-    const { MusicListActions } = this.props;
+    const { MusicListActions, loading } = this.props;
 
     try {
       const response = await api.getTOP();
@@ -46,9 +49,12 @@ class MusicListContainder extends React.Component {
 
       // console.log(response.data);
 
-      MusicListActions.loading();
+      if (loading) {
+        MusicListActions.loading();
+      }
+
     } catch (e) {
-      // console.log(e);
+      console.log(e);
     }
   };
 
@@ -63,11 +69,11 @@ class MusicListContainder extends React.Component {
       // console.log(response);
     } catch (e) {
       // console.log(e);
-      alert('로그인 후 다시 시도해주세요.')
+      alert('로그인 후 다시 시도해주세요.');
     }
-  }
+  };
 
- getCHECK = async () => {
+  getCHECK = async () => {
     const { MusicListActions } = this.props;
     try {
       const response = await api.getCHECK();
@@ -77,9 +83,9 @@ class MusicListContainder extends React.Component {
     } catch (e) {
       // console.log(e);
     }
-  }
+  };
 
-  getPLAYLIST = async (bool) => {
+  getPLAYLIST = async bool => {
     const { MusicListActions, check } = this.props;
 
     try {
@@ -95,23 +101,44 @@ class MusicListContainder extends React.Component {
 
       // eslint-disable-next-line array-callback-return
       response.data.results.map(item => {
-        const { title, image_src: imgSrc, album, artist, music_info_url: url } = item;
-        
+        const {
+          title,
+          image_src: imgSrc,
+          album,
+          artist,
+          music_info_url: url,
+        } = item;
+
         // console.log(item);
         // eslint-disable-next-line no-plusplus
-        return MusicListActions.setData(title, imgSrc, album, artist, id++, url);
+        return MusicListActions.setData(
+          title,
+          imgSrc,
+          album,
+          artist,
+          id++,
+          url,
+        );
       });
-      
+
       return bool ? MusicListActions.loading() : null;
     } catch (e) {
       // console.log(e);
     }
-  }
+  };
 
   render() {
     const { list, loading, check, flag } = this.props;
     const { handleClick } = this;
-    return <MusicList list={list} loading={loading} onClick={handleClick} check={check} flag={flag} />;
+    return (
+      <MusicList
+        list={list}
+        loading={loading}
+        onClick={handleClick}
+        check={check}
+        flag={flag}
+      />
+    );
   }
 }
 
@@ -122,6 +149,7 @@ const mapStateToProps = ({ musicList, search, login }) => ({
   check: musicList.check,
   flag: search.flag,
   userInfo: login.userInfo,
+  status: musicList.status,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -133,12 +161,12 @@ const mapDispatchToProps = dispatch => ({
 MusicListContainder.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   list: PropTypes.array,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
 };
 
 MusicListContainder.defaultProps = {
   list: [],
-  loading: true
+  loading: true,
 };
 
 export default connect(

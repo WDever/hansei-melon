@@ -18,7 +18,8 @@ const iniitalState = {
   list: [],
   loading: true,
   code: 0,
-  check: true
+  check: true,
+  status: 'none',
 };
 
 export default handleActions(
@@ -33,6 +34,7 @@ export default handleActions(
           artist: action.payload.artist,
           url: action.payload.url
         });
+        draft.status = 'success';
       }),
     [LOADING]: (state, action) =>
       produce(state, draft => {

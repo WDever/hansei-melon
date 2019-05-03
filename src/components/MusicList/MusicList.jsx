@@ -2,20 +2,21 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { Circle } from 'better-react-spinkit';
+import { Link } from 'react-router-dom';
 import styles from './MusicList.scss';
 import MusicItem, { PlaylistItem } from '../MusicItem';
 
 const cx = classNames.bind(styles);
 
 class MusicList extends React.Component {
-  shouldComponentUpdate = (nextProps) => {
+  shouldComponentUpdate = nextProps => {
     const { list } = this.props;
     // console.log(list)
     // console.log(nextProps.list)
     // console.log(nextProps.list === list || nextProps.list.length === 0)
     return nextProps.list === list || nextProps.list.length === 0;
-  }
-  
+  };
+
   render() {
     const { check, loading, list, onClick } = this.props;
     const musicList = list.map(item => (
@@ -74,6 +75,14 @@ class MusicList extends React.Component {
           {check ? 'TOP 100' : `Today's Playlist`}
         </div>
         {musicList}
+        {/* <footer>
+          <Link to="/terms" className={cx('footer')}>
+            이용 약관
+          </Link>
+          <Link to="/privacy" className={cx('footer')}>
+            개인정보처리방침
+          </Link>
+        </footer> */}
       </div>
     );
   }

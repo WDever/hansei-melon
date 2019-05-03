@@ -1,4 +1,6 @@
 .page-template {
+  height: 100vh;
+
   .search-wrapper {
     width: 100%;
     display: flex;
@@ -6,16 +8,20 @@
     align-items: center;
     margin: 1rem 0 4rem 0;
   }
+
+  // .list-wrapper {
+  //   // height: 75%;
+  // }
 }
 
-footer {
-  font-size: 0.5rem;
-  display: flex;
-  justify-content: center;
+// footer {
+//   font-size: 0.5rem;
+//   display: flex;
+//   justify-content: center;
 
-  .footer {
-    text-decoration: none;
-    color: grey;
-    margin: 1rem;
-  }
-}
+//   .footer {
+//     text-decoration: none;
+//     color: grey;
+//     margin: 1rem;
+//   }
+// }

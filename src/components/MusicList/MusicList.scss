@@ -3,6 +3,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+  height: 100%;
 
   .top-title {
     width: 94%;
@@ -17,5 +18,18 @@
     color: black;
     margin: 5rem;
     font-size: 1.5rem;
+  }
+}
+
+footer {
+  width: 100%;
+  font-size: 0.5rem;
+  display: flex;
+  justify-content: center;
+
+  .footer {
+    text-decoration: none;
+    color: grey;
+    margin: 1rem;
   }
 }
