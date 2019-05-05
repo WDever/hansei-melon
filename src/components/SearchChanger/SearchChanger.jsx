@@ -69,7 +69,7 @@ class SearchChanger extends React.Component {
               cssClass="fbnone"
               textButton="FACEBOOK ID로 로그인 하기"
               isMobile
-              redirectUri="http://localhost:3001"
+              redirectUri="https://www.hansei-melon.com/"
             />
           </div>
         </div>
@@ -108,7 +108,7 @@ class SearchChanger extends React.Component {
             icon={<TiSocialFacebookCircular />}
             textButton="FACEBOOK ID로 로그인 하기"
             isMobile
-            redirectUri="http://localhost:3001"
+            redirectUri="https://www.hansei-melon.com/"
           />
         </div>
       );
