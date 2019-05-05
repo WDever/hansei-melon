@@ -8,7 +8,7 @@ import styles from './SearchChanger.scss';
 const cx = classNames.bind(styles);
 
 class SearchChanger extends React.Component {
-  shouldComponentUpdate = (nextProps) => {
+  shouldComponentUpdate = nextProps => {
     const { cat, autoLogin } = this.props;
     return cat !== nextProps.cat || autoLogin !== nextProps.autoLogin;
   };
@@ -59,7 +59,7 @@ class SearchChanger extends React.Component {
               cssClass="fbnone"
               textButton="FACEBOOK ID로 로그인 하기"
               isMobile
-              redirectUri="https://www.hansei-melon.com/"
+              redirectUri="https://www.facebook.com/connect/login_success.html"
             />
           </div>
         </div>
