@@ -9,8 +9,12 @@ const cx = classNames.bind(styles);
 
 class SearchChanger extends React.Component {
   shouldComponentUpdate = nextProps => {
-    const { cat, autoLogin } = this.props;
-    return cat !== nextProps.cat || autoLogin !== nextProps.autoLogin;
+    const { cat, autoLogin, userInfo } = this.props;
+    return (
+      cat !== nextProps.cat ||
+      autoLogin !== nextProps.autoLogin ||
+      userInfo.keyToken !== nextProps.userInfo.keyToken
+    );
   };
 
   render() {
@@ -47,10 +51,16 @@ class SearchChanger extends React.Component {
             </div>
           </div>
           <div className={cx('userInfo')}>
-            <span>{userInfo.name} 님</span>
-            <span className={cx('logout')} onClick={logout}>
-              로그아웃
-            </span>
+            {userInfo.keyToken === '' ? (
+              <span>로그인중..</span>
+            ) : (
+              <>
+                <span>{userInfo.name} 님</span>
+                <span className={cx('logout')} onClick={logout}>
+                  로그아웃
+                </span>
+              </>
+            )}
             <FacebookLogin
               appId="254473261900602"
               autoLoad
@@ -59,7 +69,7 @@ class SearchChanger extends React.Component {
               cssClass="fbnone"
               textButton="FACEBOOK ID로 로그인 하기"
               isMobile
-              redirectUri="https://www.hansei-melon.com/"
+              redirectUri="http://localhost:3001"
             />
           </div>
         </div>
@@ -98,7 +108,7 @@ class SearchChanger extends React.Component {
             icon={<TiSocialFacebookCircular />}
             textButton="FACEBOOK ID로 로그인 하기"
             isMobile
-            redirectUri="https://www.hansei-melon.com/"
+            redirectUri="http://localhost:3001"
           />
         </div>
       );

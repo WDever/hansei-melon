@@ -6,6 +6,7 @@ const LOADING = 'musicList/LOADING';
 const CHECK = 'musicList/CHECK';
 const RESET = 'musicList/RESET';
 const CHECK_CODE = 'musicList/CHECK_CODE';
+const SET_STATUS = 'musicList/SET_STATUS';
 
 // eslint-disable-next-line no-plusplus
 export const setData = createAction(SET_DATA, (title, imgSrc, album, artist, id, url) => ({ title, imgSrc, album, artist, id, url}));
@@ -13,6 +14,7 @@ export const loading = createAction(LOADING);
 export const check = createAction(CHECK, code => ({ code }));
 export const reset = createAction(RESET);
 export const checkCode = createAction(CHECK_CODE);
+export const setStatus = createAction(SET_STATUS);
 
 const iniitalState = {
   list: [],
@@ -34,7 +36,6 @@ export default handleActions(
           artist: action.payload.artist,
           url: action.payload.url
         });
-        draft.status = 'success';
       }),
     [LOADING]: (state, action) =>
       produce(state, draft => {
@@ -51,7 +52,11 @@ export default handleActions(
     [CHECK_CODE]: (state, action) =>
       produce(state, draft => {
         draft.check = !state.check
-      })
+      }),
+    [SET_STATUS]: (state, action) =>
+      produce(state, draft => {
+        draft.status = action.payload;
+      }),
   },
   iniitalState,
 );

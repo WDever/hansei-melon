@@ -21,7 +21,10 @@ class MusicListContainder extends React.Component {
 
     // console.log(typeof code);
 
-    return (code === 423 || hour >= 12) && status === 'none' ? this.getPLAYLIST(true) : this.getTOP();
+    // return (code === 423 || hour >= 12) && status === 'none'
+    return (code === 423 || hour >= 12) && (status === 'none' || status === 'playlist')
+      ? this.getPLAYLIST(true)
+      : this.getTOP();
     // return (code === 423 || hour >= 12) && status === 'none' ? this.getTOP() : null;
     // return list.length === 0 ? this.getTOP() : null;
   }
@@ -50,9 +53,9 @@ class MusicListContainder extends React.Component {
       // console.log(response.data);
 
       if (loading) {
+        MusicListActions.setStatus('top');
         MusicListActions.loading();
       }
-
     } catch (e) {
       console.log(e);
     }
@@ -86,9 +89,10 @@ class MusicListContainder extends React.Component {
   };
 
   getPLAYLIST = async bool => {
-    const { MusicListActions, check } = this.props;
+    const { MusicListActions, check, status } = this.props;
 
     try {
+      if (status === 'playlist') return;
       const response = await api.getPLAYLIST();
 
       // console.log(response);
@@ -108,6 +112,8 @@ class MusicListContainder extends React.Component {
           artist,
           music_info_url: url,
         } = item;
+
+        MusicListActions.setStatus('playlist');
 
         // console.log(item);
         // eslint-disable-next-line no-plusplus
