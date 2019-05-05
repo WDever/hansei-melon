@@ -59,6 +59,7 @@ class SearchChanger extends React.Component {
               cssClass="fbnone"
               textButton="FACEBOOK ID로 로그인 하기"
               isMobile
+              redirectUri="https://www.hansei-melon.com/"
             />
           </div>
         </div>

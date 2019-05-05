@@ -66,6 +66,7 @@ export default handleActions(
       produce(state, draft => {
         draft.userInfo.name = '';
         draft.userInfo.accessToken = '';
+        draft.userInfo.keyToken = '';
       }),
   },
   initialState
