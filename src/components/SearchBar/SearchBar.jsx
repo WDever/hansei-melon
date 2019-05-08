@@ -27,7 +27,7 @@ class SearchBar extends React.Component {
 
     setInterval(() => this.setTime(), 1000);
 
-    if (sum >= 30000 && sum <= 43200 && code !== 423) {
+    if (sum >= 28800 && sum <= 43200 && code !== 423) {
       this.setState(() => ({
         placeholder: '',
       }));
@@ -50,8 +50,8 @@ class SearchBar extends React.Component {
  
     const sum = hour + min + sec;
 
-    if(sum < 30000) {
-      const remainSum = 30000 - sum;
+    if(sum < 28800) {
+      const remainSum = 28800 - sum;
       const remainHour = Math.floor(remainSum / 3600);
       const remainMin = Math.floor((remainSum - remainHour * 3600) / 60);
       const remainSec = remainSum - remainHour * 3600 - remainMin * 60;
@@ -60,7 +60,7 @@ class SearchBar extends React.Component {
       }));
     }
 
-    else if(sum === 30000) {
+    else if(sum === 28800) {
       this.setState(() => ({
         placeholder: '',
       }));
